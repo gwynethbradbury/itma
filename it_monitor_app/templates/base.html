@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel=stylesheet href="{{ url_for('static',filename='css/bootstrap.css') }}">
+        <link rel=stylesheet href="{{ url_for('static',filename='css/application.css') }}">
+
+        <script src="{{ url_for('static', filename='js/jquery-2.2.4.js') }}" defer></script>
+        <script src="{{ url_for('static', filename='js/bootstrap.js') }}" defer></script>
+        <script src="{{ url_for('static', filename='js/application.js') }}" defer></script>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+
+      // Load the Visualization API and the corechart package.
+      google.charts.load('current', {'packages':['corechart']});
+
+      // Set a callback to run when the Google Visualization API is loaded.
+      google.charts.setOnLoadCallback(drawChart);
+
+      // Callback that creates and populates a data table,
+      // instantiates the pie chart, passes in the data and
+      // draws it.
+      function drawChart() {
+
+        // Create the data table.
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Topping');
+        data.addColumn('number', 'Slices');
+        data.addRows([
+          ['Mushrooms', 3],
+          ['Onions', 1],
+          ['Olives', 1],
+          ['Zucchini', 1],
+          ['Pepperoni', 2]
+        ]);
+
+        // Set chart options
+        var options = {'title':'How Much Pizza I Ate Last Night',
+                       'width':400,
+                       'height':300};
+
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+    </script>
+        {% block additionalscripts %}{% endblock %}
+
+
+
+        <title>IT Tasks</title>
+
+{#        #F16745 #FFC65D #7BC8A4 #4CC3D9 #93648D #404040#}
+
+        <style >
+            .color-DF{color:#983d00;}
+        .btn-DF{color:#ffffff;background-color: #ff7518;border-color:#ff7518}
+        .btn-DF.focus{color:#ffffff;background-color:#e45c00;border-color:#983d00}
+        .btn-DF:hover{color:#ffffff;background-color:#e45c00;border-color:#da5800}
+        .btn-DF[disabled].active,fieldset[disabled] .btn-DF.active{background-color:#ff7518;border-color:#ff7518}
+        .btn-DF .badge{color:#ff7518;background-color:#ffffff}
+
+            .color-RPP{color:#c8974d;}
+        .btn-RPP{color:#ffffff;background-color: #FFC65D;border-color:#FFC65D}
+        .btn-RPP.focus{color:#ffffff;background-color: #e7ae58;border-color: #c8974d  }
+        .btn-RPP:hover{color:#ffffff;background-color:#e7ae58;border-color:#e7ae58}
+        .btn-RPP[disabled].active,fieldset[disabled] .btn-DF.active{background-color:#FFC65D;border-color:#FFC65D}
+        .btn-RPP .badge{color:#FFC65D;background-color:#ffffff}
+
+            .color-PA{color:#4d9571;}
+        .btn-PA{color:#ffffff;background-color: #7BC8A4;border-color:#7BC8A4}
+        .btn-PA.focus{color:#ffffff;background-color: #62ab89;border-color: #4d9571}
+        .btn-PA:hover{color:#ffffff;background-color:#62ab89;border-color:#62ab89}
+        .btn-PA[disabled].active,fieldset[disabled] .btn-DF.active{background-color:#7BC8A4;border-color:#7BC8A4}
+        .btn-PA .badge{color:#7BC8A4;background-color:#ffffff}
+
+            .color-GB{color:#3e8399;}
+        .btn-GB{color:#ffffff;background-color: #4CC3D9;border-color:#4CC3D9}
+        .btn-GB.focus{color:#ffffff;background-color: #48a2b8;border-color: #3e8399}
+        .btn-GB:hover{color:#ffffff;background-color:#48a2b8;border-color:#48a2b8}
+        .btn-GB[disabled].active,fieldset[disabled] .btn-DF.active{background-color:#4CC3D9;border-color:#4CC3D9}
+        .btn-GB .badge{color:#4CC3D9;background-color:#ffffff}
+
+            .color-SA{color:#634a5e;}
+        .btn-SA{color:#ffffff;background-color: #93648D;border-color:#93648D}
+        .btn-SA.focus{color:#ffffff;background-color: #82587e;border-color: #634a5e}
+        .btn-SA:hover{color:#ffffff;background-color:#82587e;border-color:#82587e}
+        .btn-SA[disabled].active,fieldset[disabled] .btn-DF.active{background-color:#93648D;border-color:#93648D}
+        .btn-SA .badge{color:#93648D;background-color:#ffffff}
+
+            .color-SE{color:#565656;}
+        .btn-SE{color:#ffffff;background-color: #8c8c8c;border-color:#8c8c8c}
+        .btn-SE.focus{color:#ffffff;background-color: #6e6e6e;border-color: #565656}
+        .btn-SE:hover{color:#ffffff;background-color:#6e6e6e;border-color:#6e6e6e}
+        .btn-SE[disabled].active,fieldset[disabled] .btn-DF.active{background-color:#8c8c8c;border-color:#8c8c8c}
+        .btn-SE .badge{color:#8c8c8c;background-color:#ffffff}
+
+
+            .color-U{color: #601890;}
+        </style>
+    </head>
+    <body>
+{#        <nav class="navbar navbar-default">#}
+{#            <div class="container-fluid">#}
+{#                <div class="navbar-header">#}
+{#                    <a class="navbar-brand" href="{{ url_for('index') }}">IT Tasks</a>#}
+{#                </div>#}
+{#                <ul class="nav navbar-nav">#}
+{#                    <li class="{{ url_for('index') | is_current_page }}">#}
+{#                        <a href="{{ url_for('index') }}">Home</a>#}
+{#                    </li>#}
+{#                    <li class="{{ url_for('missions') | is_current_page }}">#}
+{#                        <a href="{{ url_for('missions') }}">Missions</a>#}
+{#                    </li>#}
+{#                    <li class="{{ url_for('tasks') | is_current_page }}">#}
+{#                        <a href="{{ url_for('tasks') }}">Tasks</a>#}
+{#                    </li>#}
+{#                    <li class="{{ url_for('owners') | is_current_page }}">#}
+{#                        <a href="{{ url_for('owners') }}">Team</a>#}
+{#                    </li>#}
+{#                </ul>#}
+{#            </div>#}
+{#        </nav>#}
+
+
+        <div class="container">
+            {% with messages = get_flashed_messages(with_categories=True) %}
+                {% if messages %}
+                    {% for category, m in messages %}
+                        {% if category %}
+                            {# alert-error changed to alert-danger in bootstrap 3, mapping is for backwards compatibility #}
+                            {% set mapping = {'message': 'info', 'error': 'danger'} %}
+                            <div class="alert alert-{{ mapping.get(category, category) }} alert-dismissable">
+                        {% else %}
+                            <div class="alert alert-dismissable">
+                        {% endif %}
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        {{ m }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+
+        {% block body %}{% endblock %}
+
+
+{#                <script src="{{ url_for('static', filename='js/jquery-2.2.4.js') }}" defer></script>#}
+
+
+
+    </body>
+</html>
