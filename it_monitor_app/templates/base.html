@@ -100,27 +100,57 @@
         </style>
     </head>
     <body>
-{#        <nav class="navbar navbar-default">#}
-{#            <div class="container-fluid">#}
-{#                <div class="navbar-header">#}
-{#                    <a class="navbar-brand" href="{{ url_for('index') }}">IT Tasks</a>#}
-{#                </div>#}
-{#                <ul class="nav navbar-nav">#}
-{#                    <li class="{{ url_for('index') | is_current_page }}">#}
-{#                        <a href="{{ url_for('index') }}">Home</a>#}
+
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                </div>
+                <ul class="nav navbar-nav">
+                    <a class="navbar-brand" href="{{ url_for('index') }}">IT Support</a>
+
+
+{#                    <li class="dropdown">#}
+{#                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ current_user.username }}#}
+{#                            <span class="caret"></span>#}
+{#                        </a>#}
+{#                        <ul class="dropdown-menu">#}
+{#                            <li><a href="{{ url_for('profile') }}">Profile</a></li>#}
+{#                            <li><a href="{{ url_for('settings') }}">Settings</a></li>#}
+{#                            <li><a href="{{ url_for('signout') }}">Log out</a></li>#}
+{#                        </ul>#}
 {#                    </li>#}
-{#                    <li class="{{ url_for('missions') | is_current_page }}">#}
-{#                        <a href="{{ url_for('missions') }}">Missions</a>#}
-{#                    </li>#}
-{#                    <li class="{{ url_for('tasks') | is_current_page }}">#}
-{#                        <a href="{{ url_for('tasks') }}">Tasks</a>#}
-{#                    </li>#}
-{#                    <li class="{{ url_for('owners') | is_current_page }}">#}
-{#                        <a href="{{ url_for('owners') }}">Team</a>#}
-{#                    </li>#}
-{#                </ul>#}
-{#            </div>#}
-{#        </nav>#}
+
+                    <li class="{{ url_for('service_status') | is_current_page }}">
+                        <a href="{{ url_for('service_status') }}">Service Status</a>
+                    </li>
+
+                    <li class="{{ url_for('useage') | is_current_page }}">
+                        <a href="{{ url_for('useage') }}">Useage</a>
+                    </li>
+
+                    <li class="{{ url_for('changepasswd') | is_current_page }}">
+                        <a href="{{ url_for('changepasswd') }}">Change Password</a>
+                    </li>
+
+                    <li class="{{ url_for('help') | is_current_page }}">
+                        <a href="{{ url_for('help') }}">Help</a>
+                    </li>
+
+
+{#                    {% if not current_user.is_authenticated %}#}
+{#                        <a class="navbar-brand" href="{{ url_for('signup') }}">Log in / Register</a>#}
+{#                    {% else %}#}
+                    <li class="{{ url_for('wakeonlan') | is_current_page }}">
+                        <a href="{{ url_for('wakeonlan') }}">Wake on LAN</a>
+                    </li>
+
+                    <li class="{{ url_for('softwares') | is_current_page }}">
+                        <a href="{{ url_for('softwares') }}">Software</a>
+                    </li>
+{#                    {% endif %}#}
+                </ul>
+            </div>
+        </nav>
 
 
         <div class="container">

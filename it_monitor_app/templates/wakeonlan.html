@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block additionalscripts %}
+{% endblock %}
+{% block body %}
+
+
+    <div class="container">
+        <h2>My Computers</h2>
+        Wake and access your computers by remote desktop.
+
+        <ul>
+            {% for w in wol_computers %}
+                <li style="padding-top: 10px">{{ w.computer }}:
+                    <form action="{{ url_for("wakeonlan", computer_id=w.computer) }}" method="POST">
+                        <input type="submit" class="btn {{ w.status_style() }}" name="wake" value="Wake"/> -
+                        <input type="submit" class="btn {{ w.status_style() }}" name="wake" value="Remote Desktop"/>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+{% endblock %}
