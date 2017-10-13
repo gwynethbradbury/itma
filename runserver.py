@@ -1,4 +1,4 @@
 from it_monitor_app import app
 
 
-app.run(debug=False,port=2000)
+app.run(debug=False,port=1443)
