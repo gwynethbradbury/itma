@@ -3,7 +3,8 @@ from enum import Enum
 from time import strftime
 
 from sqlalchemy.orm import relationship
-from sqlalchemy.ext.hybrid import hybrid_property
+import datetime
+
 
 class Status(Enum):
     DOWN = 1
@@ -84,25 +85,64 @@ class software(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     software_name = db.Column(db.String(70))
     link=db.Column(db.String(100))
-    licenselink=db.Column(db.String(100))
     downloadlink=db.Column(db.String(100))
     license=db.Column(db.Text())
+    #admin
+    license_expires=db.Column(db.Boolean,default=True)#is this a perpetual license
+    license_expiry_date=db.Column(db.DateTime)# when does the software license expire
+    license_renewal_date=db.Column(db.DateTime)# when does the software need to be renewed (sometimes before the exp date - this is for IT mgmt)
+    owner=db.Column(db.String(100), default="IT")# who owns the license? group or school?
+    count=db.Column(db.Integer,default=-1)#also determines type (site vs count)
+    explicit_approval_required=db.Column(db.Boolean,default=True)#true - generate support request, false - generate download link on mirror.ouce
+
 
     users = relationship("software_user",
                     secondary=user_license.__table__,
                     backref="softwares")
 
-    def __init__(self, sw_name,link="#",licenselink="#",downloadlink="#", license="no license text"):
+    def __init__(self, sw_name,link="#",downloadlink="#", license="no license text",lexpires=True,
+                 lexpiry=datetime.datetime.utcnow() + datetime.timedelta(days=(365)),
+                 lrenew=datetime.datetime.utcnow() + datetime.timedelta(days=(365)),
+                 owner="IT",count=-1,approve=False):
         self.software_name=sw_name
         self.link=link
-        self.licenselink=licenselink
         self.downloadlink=downloadlink
         self.license=license
+        self.license_expires = lexpires
+        self.license_expiry_date= lexpiry
+        self.license_renewal_date = lrenew
+        self.owner = owner
+        self.count = count
+        self.explicit_approval_required = approve
 
     def accepted_by_user(self,user):
         if user in self.users:
             return True
         return False
+
+    def is_available(self):
+        pass
+
+    def licence_type(self):
+        if self.count<0:
+            return 'site license'
+        else:
+            return '{} licenses avilable for this software'.format(self.count)
+
+    def __str__(self):
+        return 'id: {},\n' \
+               'software_name: {},\n' \
+               'link: {},\n' \
+               'downloadlink: {},\n' \
+               'license: {},\n' \
+               'ADMIN INFO:\n' \
+               'license_expires: {},\n' \
+               'license_expiry_date: {},\n' \
+               'license_renewal_date: {},\n' \
+               'owner: {},\n' \
+               'count: {},\n' \
+               'explicit_approval_required'.format(self.id ,self.software_name ,self.link,self.downloadlink,self.license,
+                                                   self.license_expires,self.license_expiry_date,self.license_renewal_date,self.owner,self.count,self.explicit_approval_required)
 
 
 class software_user(db.Model):

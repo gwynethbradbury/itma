@@ -9,7 +9,11 @@
         To access the downloader for this software, click the link
         <ul>
             {% for s in this_software_user.softwares %}
-                <li style="padding-top: 10px">{{ s.software_name }} - <a href="{{ s.downloadlink }}"><button class="btn btn-info">Download</button></a></li>
+                <li style="padding-top: 10px">
+                    {{ s.software_name }} -
+                    <a href="{{ url_for("request_software", sid=s.id, personal='True') }}"><button class="btn btn-info">Download for personal use</button></a>
+                    <a href="{{ url_for("request_software", sid=s.id, personal='False') }}"><button class="btn btn-info">Request install on OUCE machine</button></a>
+                </li>
             {% endfor %}
         </ul>
     </div>
@@ -23,7 +27,7 @@
                 <li style="padding-top: 10px">
                     {{ s.software_name }} - <a href="{{ s.link }}">About</a> -
                       <!-- Trigger the modal with a button -->
-                      <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal{{ s.id }}">License Agreement</button>
+                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal{{ s.id }}">License Agreement</button> - <i>{{ s.owner }} - Available until: {{ s.license_expiry_date.day }}.{{ s.license_expiry_date.month }}.{{ s.license_expiry_date.year }}</i>
                       <!-- Modal -->
                       <div class="modal fade" id="myModal{{ s.id }}" role="dialog">
                         <div class="modal-dialog">
@@ -35,10 +39,14 @@
                               <h4 class="modal-title">License Agreement for {{ s.software_name }}</h4>
                             </div>
                             <div class="modal-body">
+                              <p>This software has {% if s.count<0 %}a site license {% else %}{{ s.count }} licenses {% endif %} and is made available by {{ s.owner }}.</p>
+                              {% if s.license_expires %}<p><i>License expires {{ s.license_expiry_date.day }}.{{ s.license_expiry_date.month }}.{{ s.license_expiry_date.year }}</i></p>{% endif %}
+                            </div>
+                            <div class="modal-body">
                               <p>{{ s.license }}</p>
                             </div>
                             <div class="modal-footer">
-                                {% if s.accepted_by_user(this_software_user) %}Already accepted
+                                {% if s.accepted_by_user(this_software_user) %}Already accepted{% if s.license_expires %}, <i>expires {{ s.license_expiry_date.day }}.{{ s.license_expiry_date.month }}.{{ s.license_expiry_date.year }}</i>{% endif %}
                                 {% else %}
                                 <form action="{{ url_for("softwares", sid=s.id) }}" method="POST">
                                   <input type="submit" class="btn btn-danger"  name="license_agreement" value="Don't Accept Licence"/>

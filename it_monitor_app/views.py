@@ -76,10 +76,35 @@ def softwares():
             flash("License not accepted",category='error')
 
 
-
     return render_template('software.html',all_software=softwares, this_software_user=this_software_user)
 
+@app.route('/request_software')
+def request_software():
+    sid = request.args.get('sid')
+    sw = software.query.get_or_404(sid)
+    if sw.explicit_approval_required:
+        flash('Request made to OUCE IT from user {}'.format(software_user_id))
+        make_support_request_for_software(sid)
+    else:
+        if request.args.get('personal')=='True':
+            flash('Download started')
+            return redirect(sw.downloadlink)
+        else:
+            flash('Request made to OUCE IT from user {}'.format(software_user_id))
+            make_support_request_for_software(sid)
 
+    return redirect('/software')
+
+def make_support_request_for_software(sid):
+    sw = software.query.get_or_404(sid)
+    emailheader="Software installation request"
+    emailbody="Software installation requested by {} for software {}".format(software_user_id.capitalize(),sw.software_name)
+    if sw.explicit_approval_required:
+        emailbody=emailbody + " Explicit approval is required for this software.\n"
+    emailbody=emailbody + sw.__str__()
+
+    return
+    #todo: send the request
 
 @app.route('/help')
 def help():
