@@ -1,0 +1,121 @@
+.badge-big {
+    font-size: 125%;
+}
+
+.badge-blue {
+    background-color: #337ab7;
+}
+
+.btn.new-item .glyphicon {
+    margin-right: 5px;
+}
+
+.kanban .panel .panel-heading .glyphicon {
+    margin-left: 5px;
+}
+
+.task-control .btn .glyphicon {
+    margin-right: 5px;
+}
+
+.tagged {
+    margin: 10px 0;
+    padding: 20px;
+    border: 1px solid #eee;
+    border-radius: 3px;
+    border-left-width: 7px;
+}
+
+.tag-grey {
+    border-left-color: #777;
+}
+
+.tag-grey h4 {
+    color: #777;
+}
+
+.tag-blue {
+    border-left-color: #486F88;
+}
+
+.tag-blue h4 {
+    color: #486F88;
+}
+
+.tag-green {
+    border-left-color: #2F9765;
+}
+
+.tag-green h4 {
+    color: #2F9765;
+}
+
+.tag-yellow {
+    border-left-color: #D9CE43;
+}
+
+.tag-yellow h4 {
+    color: #D9CE43;
+}
+
+.tag-red {
+    border-left-color: #BB2024;
+}
+
+.tag-red h4 {
+    color: #BB2024;
+}
+
+
+
+.tag-df {
+    border-left-color: #ff7518;
+}
+
+.tag-df h4 {
+    color: #ff7518;
+}
+
+.tag-rpp {
+    border-left-color: #FFC65D;
+}
+
+.tag-rpp h4 {
+    color: #FFC65D;
+}
+
+.tag-pa {
+    border-left-color: #7BC8A4;
+}
+
+.tag-pa h4 {
+    color: #7BC8A4;
+}
+
+.tag-gb {
+    border-left-color: #4CC3D9;
+}
+
+.tag-gb h4 {
+    color: #4CC3D9;
+}
+
+.tag-sa {
+    border-left-color: #93648D;
+}
+
+.tag-sa h4 {
+    color: #93648D;
+}
+
+.tag-se {
+    border-left-color: #8c8c8c;
+}
+
+.tag-se h4 {
+    color: #8c8c8c;
+}
+
+.mission-item-additional-content {
+    margin-top: 10px;
+}

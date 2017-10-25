@@ -14,7 +14,6 @@ sys.path.insert(0,path)
 
 from threading import Lock
 from werkzeug.wsgi import pop_path_info, extract_path_info, peek_path_info
-import dbconfig
 
 from it_monitor_app import app as application
 

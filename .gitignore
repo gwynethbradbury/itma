@@ -7,4 +7,4 @@ main/sqla/reload.py
 .idea*
 .idea
 main/sqla/reload.py
-static
+#static
