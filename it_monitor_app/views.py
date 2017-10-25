@@ -26,6 +26,8 @@ def useage():
 
 
 software_user_id="unknown"
+
+
 @app.route('/wakeonlan', methods=['POST', 'GET'])
 def wakeonlan():
     wol_computers=wol_computer.query.filter_by(username=software_user_id).all()
@@ -43,6 +45,38 @@ def wakeonlan():
 
 @app.route('/changepasswd')
 def changepasswd():
+    @app.route('/account', methods=["GET", "POST"])
+    def account():
+        if current_user.is_authenticated():
+            instances = []
+            groups = current_user.get_groups()
+            for g in groups:
+                instances.append(AH.get_projects_for_group(g))
+
+            from core.auth.forms import ChangePWForm
+            form = ChangePWForm()
+            if form.validate_on_submit():
+                user = current_user
+                # user = User(username=form.username.data,
+                #             email=form.username.data,
+                #             password=form.password.data)
+                success, ret = current_user.change_password(form.oldpw, form.password, form.password2)
+                if success:
+                    flash(ret, category='message')
+                else:
+                    flash(ret, category="error")
+
+                    # return redirect(url_for('index'))
+
+            try:
+                return render_template("account.html", groups=groups, instances=instances, form=form)
+            except TemplateNotFound:
+                abort(404)
+
+        else:
+            abort(403)
+
+
     return render_template('changepasswd.html')
 
 @app.route('/software', methods=['POST', 'GET'])

@@ -1,0 +1,3 @@
+[submodule "it_monitor_app/auth"]
+	path = it_monitor_app/auth
+	url = https://gitlab.ouce.ox.ac.uk/cso/dbas_auth.git

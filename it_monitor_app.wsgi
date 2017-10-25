@@ -5,6 +5,6 @@ sys.path.insert(0,path)
 
 
 
-from flasktasks import app as application
+from it_monitor_app import app as application
 
 
