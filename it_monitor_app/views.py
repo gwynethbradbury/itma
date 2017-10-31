@@ -43,38 +43,30 @@ def wakeonlan():
 
     return render_template('wakeonlan.html',wol_computers=wol_computers)
 
-@app.route('/changepasswd')
+@app.route('/changepasswd', methods=["GET", "POST"])
 def changepasswd():
-    @app.route('/account', methods=["GET", "POST"])
-    def account():
-        if current_user.is_authenticated():
-            instances = []
-            groups = current_user.get_groups()
-            for g in groups:
-                instances.append(AH.get_projects_for_group(g))
-
-            from core.auth.forms import ChangePWForm
-            form = ChangePWForm()
-            if form.validate_on_submit():
-                user = current_user
-                # user = User(username=form.username.data,
-                #             email=form.username.data,
-                #             password=form.password.data)
-                success, ret = current_user.change_password(form.oldpw, form.password, form.password2)
-                if success:
-                    flash(ret, category='message')
-                else:
-                    flash(ret, category="error")
-
-                    # return redirect(url_for('index'))
-
-            try:
-                return render_template("account.html", groups=groups, instances=instances, form=form)
-            except TemplateNotFound:
-                abort(404)
-
-        else:
-            abort(403)
+    import auth.iaasldap as auth
+    auth.change_passwordAD()
+    #     from auth.forms import ChangePWForm
+    #     form = ChangePWForm()
+    #     if form.validate_on_submit():
+    #         user = current_user
+    #         # user = User(username=form.username.data,
+    #         #             email=form.username.data,
+    #         #             password=form.password.data)
+    #         success, ret = current_user.change_password(form.oldpw, form.password, form.password2)
+    #         if success:
+    #             flash(ret, category='message')
+    #         else:
+    #             flash(ret, category="error")
+    #
+    #             # return redirect(url_for('index'))
+    #
+    #     try:
+    #         return render_template("account.html", groups=groups, instances=instances, form=form)
+    #     except TemplateNotFound:
+    #         abort(404)
+    #
 
 
     return render_template('changepasswd.html')
