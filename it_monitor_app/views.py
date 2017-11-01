@@ -46,7 +46,7 @@ def wakeonlan():
 @app.route('/changepasswd', methods=["GET", "POST"])
 def changepasswd():
     import auth.iaasldap as auth
-    auth.change_passwordAD(user=request.form.get('username'),
+    auth.change_password(user=request.form.get('username'),
                            current_pass=request.form.get('current_pass'),
                            new_pass=request.form.get('new_pass'),
                            repeat_password=request.form.get('rep_pass'))
