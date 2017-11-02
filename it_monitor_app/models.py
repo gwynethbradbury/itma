@@ -1,4 +1,32 @@
-from it_monitor_app import db
+# from . import db
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+import dbconfig
+
+it_monitor_app_app = Flask(__name__)
+it_monitor_app_app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://{}:{}@{}/{}'\
+    .format(dbconfig.db_user,
+            dbconfig.db_password,
+            dbconfig.db_hostname,
+            dbconfig.db_name)
+
+it_monitor_app_app.secret_key = 'super secret key'
+it_monitor_app_app.config['SESSION_TYPE'] = 'filesystem'
+
+SQLALCHEMY_BINDS={'it_monitor_app':'mysql+pymysql://{}:{}@{}/{}'\
+    .format(dbconfig.db_user,
+            dbconfig.db_password,
+            dbconfig.db_hostname,
+            dbconfig.db_name)}
+it_monitor_app_app.config['SQLALCHEMY_BINDS'] =SQLALCHEMY_BINDS
+
+db = SQLAlchemy(it_monitor_app_app)
+
+
+
+
+
+
 from enum import Enum
 from time import strftime
 
@@ -24,6 +52,8 @@ class Color(Enum):
 
 
 class Service(db.Model):
+    __bind_key__ = 'it_monitor_app'
+
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(70))
     status = db.Column(db.Integer,default=1) #1: down; 3: runnng; 2: running but some problem identified
@@ -47,6 +77,7 @@ class Service(db.Model):
         return 'Status Unknown'
 
 class wol_computer(db.Model):
+    __bind_key__ = 'it_monitor_app'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(8))
     computer = db.Column(db.String(20))
@@ -103,6 +134,7 @@ class wol_computer(db.Model):
 
 
 class user_license(db.Model):
+    __bind_key__ = 'it_monitor_app'
     id = db.Column(db.Integer, primary_key=True)
     software_user_id = db.Column(db.Integer, db.ForeignKey('software_user.id'))
     software_id = db.Column(db.Integer, db.ForeignKey('software.id'))
@@ -113,6 +145,7 @@ class user_license(db.Model):
 
 
 class software(db.Model):
+    __bind_key__ = 'it_monitor_app'
     id = db.Column(db.Integer, primary_key=True)
     software_name = db.Column(db.String(70))
     link=db.Column(db.String(100))
@@ -177,6 +210,7 @@ class software(db.Model):
 
 
 class software_user(db.Model):
+    __bind_key__ = 'it_monitor_app'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(8),unique=True)
 

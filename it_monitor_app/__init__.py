@@ -12,16 +12,25 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://{}:{}@{}/{}'\
 app.secret_key = 'super secret key'
 app.config['SESSION_TYPE'] = 'filesystem'
 
+SQLALCHEMY_BINDS={'it_monitor_app':'mysql+pymysql://{}:{}@{}/{}'\
+    .format(dbconfig.db_user,
+            dbconfig.db_password,
+            dbconfig.db_hostname,
+            dbconfig.db_name)}
+app.config['SQLALCHEMY_BINDS'] =SQLALCHEMY_BINDS
+
 db = SQLAlchemy(app)
 
 
-import it_monitor_app.views
-import it_monitor_app.filters
-import it_monitor_app.plugin_filters
-import it_monitor_app.models
-import it_monitor_app.logger
+import views
+import filters
+import plugin_filters
+import models
+import logger
 
 
 from it_monitor_app.plugins import load_plugins
 
 load_plugins()
+
+

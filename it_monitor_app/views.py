@@ -1,8 +1,8 @@
 from flask import render_template, request, redirect, url_for, abort, jsonify, flash
 from collections import defaultdict
-from it_monitor_app import app, db
-from it_monitor_app.models import Status, Color, Service, software, software_user, user_license, wol_computer
-from it_monitor_app.signals import task_created, mission_created
+from . import app, db
+from models import Status, Color, Service, software, software_user, user_license, wol_computer
+from signals import task_created, mission_created
 
 
 @app.route('/')
