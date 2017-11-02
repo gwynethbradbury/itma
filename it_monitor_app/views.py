@@ -25,16 +25,26 @@ def useage():
 
 
 
-software_user_id="unknown"
+software_user_id="cenv0594"
 
 
 @app.route('/wakeonlan', methods=['POST', 'GET'])
 def wakeonlan():
     wol_computers=wol_computer.query.filter_by(username=software_user_id).all()
+
+
     if request.method == 'POST':
+        w = wol_computer.query.filter_by(id=request.args.get('computer_id')).first()
         if request.form.get('wake')=="Wake":
-            flash("no wake method entered", category="message")
-        elif request.form.get('wake')=="Remote Desktop":
+            r, msg = w.wake_on_lan(uid=software_user_id)
+            if r==1:
+                flash(msg,category="error")
+            elif r==3:
+                flash(msg,category="info")
+            else:
+                flash(msg,category="warning")
+
+        elif request.form.get('wake') == "Remote Desktop":
             flash("no rdp method entered", category="message")
         else:
             flash("something went wrong",category="error")

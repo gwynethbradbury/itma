@@ -4,7 +4,8 @@ from time import strftime
 
 from sqlalchemy.orm import relationship
 import datetime
-
+from subprocess import check_output, call
+from dbconfig import debug as is_debug
 
 class Status(Enum):
     DOWN = 1
@@ -55,21 +56,51 @@ class wol_computer(db.Model):
         self.computer=computer
 
     def get_status(self):
-        return 3
+        return self.is_awake()
 
     def status_style(self):
-        if self.get_status()==3:
+        if self.get_status() == 3:
             return 'btn-success'
-        if self.get_status()==1:
+        if self.get_status() == 1:
             return 'btn-danger'
         return 'btn-warning'
 
 
-    def wake_on_lan(self):
-        pass
+    def wake_on_lan(self,uid):
+        if uid == self.username:
+            if is_debug:
+                return 2,"debug version"
+
+            call(["/usr/local/bin/wol_by_name", self.computer])
+
+            r = self.is_awake()
+            if r==1:
+                return r, "{} is still asleep.".format(self.computer)
+            elif r==3:
+                return r, "{} is awake!".format(self.computer)
+            else:
+                return r, "Something went wrong.."
+
+
+
+        return self.is_awake()
+
 
     def do_remotedesktop(self):
         pass
+
+    def is_awake(self):
+        if is_debug:
+            return 1
+
+        r = check_output(["/usr/local/bin/is_up", self.computer])
+        rr = r.split('\n')
+        if rr[0] == 'up':
+            return 3
+        elif rr[0] == 'down':
+            return 1
+        return 2
+
 
 class user_license(db.Model):
     id = db.Column(db.Integer, primary_key=True)

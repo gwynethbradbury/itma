@@ -36,7 +36,7 @@ def create_licence(sid,uid):
     return
 
 def create_wol_computer():
-    w = wol_computer()
+    w = wol_computer("cenv0594","OUCE38-13")
     db.session.add(w)
     db.session.commit()
     return
