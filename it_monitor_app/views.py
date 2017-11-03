@@ -3,7 +3,14 @@ from collections import defaultdict
 from . import app, db
 from models import Status, Color, Service, software, software_user, user_license, wol_computer
 from signals import task_created, mission_created
+import time
+from it_monitor_app.auth.iaasldap import LDAPUser as LDAPUser
 
+current_user = LDAPUser()
+
+@app.context_processor
+def inject_paths():
+    return dict(LDAPUser=LDAPUser())
 
 @app.route('/')
 def index():
@@ -25,18 +32,18 @@ def useage():
 
 
 
-software_user_id="cenv0594"
 
 
 @app.route('/wakeonlan', methods=['POST', 'GET'])
 def wakeonlan():
-    wol_computers=wol_computer.query.filter_by(username=software_user_id).all()
+    wol_computers=wol_computer.query.filter_by(username=current_user.uid_trim()).all()
 
 
     if request.method == 'POST':
         w = wol_computer.query.filter_by(id=request.args.get('computer_id')).first()
         if request.form.get('wake')=="Wake":
-            r, msg = w.wake_on_lan(uid=software_user_id)
+            r, msg = w.wake_on_lan(uid=current_user.uid_trim())
+            time.sleep(3)
             if r==1:
                 flash(msg,category="error")
             elif r==3:
@@ -87,14 +94,14 @@ def changepasswd():
 @app.route('/software', methods=['POST', 'GET'])
 def softwares():
     # if the user has never used the service, then add them to the database
-    if software_user.query.filter_by(username=software_user_id).count==0:
-        su = software_user(software_user_id)
+    if software_user.query.filter_by(username=current_user.uid_trim()).count==0:
+        su = software_user(current_user.uid_trim())
         db.session.add(su)
         db.session.commit()
         flash("First time user added to database.", category="message")
 
 
-    this_software_user = software_user.query.filter_by(username=software_user_id).first()
+    this_software_user = software_user.query.filter_by(username=current_user.uid_trim()).first()
     softwares = software.query.order_by(software.software_name.asc()).all()
 
     if request.method == 'POST':
@@ -122,14 +129,14 @@ def request_software():
     sid = request.args.get('sid')
     sw = software.query.get_or_404(sid)
     if sw.explicit_approval_required:
-        flash('Request made to OUCE IT from user {}'.format(software_user_id))
+        flash('Request made to OUCE IT from user {}'.format(current_user.uid_trim()))
         make_support_request_for_software(sid)
     else:
         if request.args.get('personal')=='True':
             flash('Download started')
             return redirect(sw.downloadlink)
         else:
-            flash('Request made to OUCE IT from user {}'.format(software_user_id))
+            flash('Request made to OUCE IT from user {}'.format(current_user.uid_trim()))
             make_support_request_for_software(sid)
 
     return redirect('/software')
@@ -137,7 +144,7 @@ def request_software():
 def make_support_request_for_software(sid):
     sw = software.query.get_or_404(sid)
     emailheader="Software installation request"
-    emailbody="Software installation requested by {} for software {}".format(software_user_id.capitalize(),sw.software_name)
+    emailbody="Software installation requested by {} for software {}".format(current_user.uid_trim().capitalize(),sw.software_name)
     if sw.explicit_approval_required:
         emailbody=emailbody + " Explicit approval is required for this software.\n"
     emailbody=emailbody + sw.__str__()

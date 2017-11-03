@@ -1,0 +1,31 @@
+
+{% macro servicestatus(services=None) %}
+    <div class="container" style="background-color: #ceffff">
+    <div class="row">
+        <h2>Current Status of SoGE IT Service</h2>
+        {% for s in services %}
+            <p>{{ s.name }} is <button class="btn {{ s.status_style() }}">{{ s.status_content() }}</button> </p>
+        {% endfor %}
+    </div>
+    </div>
+{% endmacro %}
+
+{% macro useage() %}
+    <div class="container" style="background-color: #ceffff">
+        <div class="row">
+            <h2>How SoGE IT Services Are Currently Being Used</h2>
+            <h3>Network Traffic</h3>
+              <h3>Cluster Load</h3>
+            <div id="chart_div"></div>
+    {#        https://developers.google.com/chart/interactive/docs/quick_start #}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro whatson(events=None) %}
+What's on
+    {% if events %}
+    {% for e in events %}
+    {% endfor %}
+    {% endif %}
+{% endmacro %}

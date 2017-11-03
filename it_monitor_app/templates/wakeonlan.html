@@ -7,27 +7,31 @@
 
     <div class="container">
         <h2>My Computers</h2>
-        Wake and access your computers by remote desktop.
+        {% if wol_computers|count>0 %}
+            Wake and access your computers by remote desktop.
 
-        <ul>
-            {% for w in wol_computers %}
-                <li style="padding-top: 10px">{{ w.computer }}:
-                    <form action="{{ url_for("wakeonlan", computer_id=w.id) }}" method="POST">
-                        {% if w.get_status() == 3 %}
-                            <input type="submit" class="btn disabled {{ w.status_style() }}" name="wake" value="Awake"/> -
-                            <input type="submit" class="btn {{ w.status_style() }}" name="wake" value="Remote Desktop"/>
-                        {% elif w.get_status() == 2 %}
-                            <p>Problems connecting to {{ w.computer }}, please contact SoGE IT.</p>
-                            <input type="submit" class="btn disabled {{ w.status_style() }}" name="wake" value="Wake"/> -
-                            <input type="submit" class="btn disabled {{ w.status_style() }}" name="wake" value="Remote Desktop"/>
-                        {% else %}
-                            <input type="submit" class="btn {{ w.status_style() }}" name="wake" value="Wake"/> -
-                            <input type="submit" class="btn disabled {{ w.status_style() }}" name="wake" value="Remote Desktop"/>
-                        {% endif %}
-                    </form>
-                </li>
-            {% endfor %}
-        </ul>
+            <ul>
+                {% for w in wol_computers %}
+                    <li style="padding-top: 10px">{{ w.computer }}:
+                        <form action="{{ url_for("wakeonlan", computer_id=w.id) }}" method="POST">
+                            {% if w.get_status() == 3 %}
+                                <input type="submit" class="btn disabled {{ w.status_style() }}" name="wake" value="Awake"/> -
+                                <input type="submit" class="btn {{ w.status_style() }}" name="wake" value="Remote Desktop"/>
+                            {% elif w.get_status() == 2 %}
+                                <p>Problems connecting to {{ w.computer }}, please contact SoGE IT.</p>
+                                <input type="submit" class="btn disabled {{ w.status_style() }}" name="wake" value="Wake"/> -
+                                <input type="submit" class="btn disabled {{ w.status_style() }}" name="wake" value="Remote Desktop"/>
+                            {% else %}
+                                <input type="submit" class="btn {{ w.status_style() }}" name="wake" value="Wake"/> -
+                                <input type="submit" class="btn disabled {{ w.status_style() }}" name="wake" value="Remote Desktop"/>
+                            {% endif %}
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            No machines registered to this username.
+        {% endif %}
     </div>
 
 {% endblock %}

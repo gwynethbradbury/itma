@@ -1,13 +1,8 @@
 {% extends "base.html" %}
+{% import 'contents_macros.html' as layout with context -%}
+
 {% block body %}
 
+{{ layout.servicestatus(services) }}
 
-<div class="container" style="background-color: #ceffff">
-    <div class="row">
-        <h2>Current Status of SoGE IT Service</h2>
-        {% for s in services %}
-            <p>{{ s.name }} is <button class="btn {{ s.status_style() }}">{{ s.status_content() }}</button> </p>
-        {% endfor %}
-    </div>
-</div>
 {% endblock %}
