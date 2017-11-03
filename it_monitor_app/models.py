@@ -73,7 +73,7 @@ class Service(db.Model):
         if self.status==3:
             return 'OK'
         if self.status==1:
-            return 'Not Ok'
+            return 'Not OK'
         return 'Status Unknown'
 
 class wol_computer(db.Model):

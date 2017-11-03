@@ -22,10 +22,10 @@ def service_status():
     services = Service.query.order_by(Service.id.asc()).all()
     return render_template('service_status.html', services=services)
 
-@app.route('/useage')
-def useage():
+@app.route('/usage')
+def usage():
     services = Service.query.order_by(Service.id.asc()).all()
-    return render_template('useage.html', services=services)
+    return render_template('usage.html', services=services)
 
 
 
@@ -43,7 +43,7 @@ def wakeonlan():
         w = wol_computer.query.filter_by(id=request.args.get('computer_id')).first()
         if request.form.get('wake')=="Wake":
             r, msg = w.wake_on_lan(uid=current_user.uid_trim())
-            time.sleep(3)
+            time.sleep(5)
             if r==1:
                 flash(msg,category="error")
             elif r==3:
