@@ -29,35 +29,33 @@
 {% macro whatson( pastevents=[],nowevents=[], futureevents=[]) %}
     <div class="container" style="background-color: #ffffff" >
 
-    {% if nowevents|length>0 %}
-        <h3>Today</h3>
-        {% for event in nowevents %}
-            <article class="event">
+    <h3>Today ({{ nowevents|length }})</h3>
+    {% for event in nowevents %}
+        <article class="event">
 
-                <div class="event-date">
-                    <p class="event-monthnow">{{ event.eventdate_str() }}</p>
-                    <p class="event-day">{{ event.eventday_str() }}</p>
-                </div>
+            <div class="event-date">
+                <p class="event-monthnow">{{ event.eventdate_str() }}</p>
+                <p class="event-day">{{ event.eventday_str() }}</p>
+            </div>
 
-                <div class="event-desc">
-                    <h4 class="event-desc-header">{{ event.title }}</h4>
-                    <p class="event-desc-detail"><span class="event-desc-time">{{ event.subtitle }}</span></p>
-                    <p>{{ eventdescription }}<br/>{{ event.room }}, {{ event.starttime }}-{{ event.endtime }}</p>
-                    <!--<a href="#" class="rsvp button">RSVP &amp; Details</a>-->
-                </div>
-            </article>
+            <div class="event-desc">
+                <h4 class="event-desc-header">{{ event.title }}</h4>
+                <p class="event-desc-detail"><span class="event-desc-time">{{ event.subtitle }}</span></p>
+                <p>{{ eventdescription }}<br/>{{ event.room }}, {{ event.starttime }}-{{ event.endtime }}</p>
+                <!--<a href="#" class="rsvp button">RSVP &amp; Details</a>-->
+            </div>
+        </article>
 
-            {% if nowevents|length>1 %}
-                <hr>
-            {% endif %}
-        {% endfor %}
+        {% if nowevents|length>1 %}
+            <hr>
+        {% endif %}
+    {% endfor %}
 
 
-    {% endif %}
 
+    <br/>
+    <h3>Upcoming Events ({{ futureevents|length }})</h3>
     {% for event in futureevents %}
-        <br/>
-        <h3>Upcoming Events</h3>
         <article class="event">
 
             <div class="event-date">
@@ -79,32 +77,31 @@
     {% endfor %}
 
 
-    {% if pastevents|length>0 %}
-        <br/>
+    <br/>
 
-        <h3>Past Events</h3>
+    <h3>Past Events ({{ pastevents|length }})</h3>
 
-        {% for event in pastevents %}
-            <article class="event">
+    {% for event in pastevents %}
+        <article class="event">
 
-                <div class="event-date">
-                    <p class="event-monthpast">{{ event.eventdate_str() }}</p>
-                    <p class="event-day">{{ event.eventday_str() }}</p>
-                </div>
+            <div class="event-date">
+                <p class="event-monthpast">{{ event.eventdate_str() }}</p>
+                <p class="event-day">{{ event.eventday_str() }}</p>
+            </div>
 
-                <div class="event-desc">
-                    <h4 class="event-desc-header">{{ event.title }}</h4>
-                    <p class="event-desc-detail"><span class="event-desc-time">{{ event.subtitle }}</span></p>
-                    <p>{{ eventdescription }}<br/>{{ event.room }}, {{ event.starttime }}-{{ event.endtime }}</p>
-                    <!--<a href="#" class="rsvp button">RSVP &amp; Details</a>-->
-                </div>
-            </article>
+            <div class="event-desc">
+                <h4 class="event-desc-header">{{ event.title }}</h4>
+                <p class="event-desc-detail"><span class="event-desc-time">{{ event.subtitle }}</span></p>
+                <p>{{ eventdescription }}<br/>{{ event.room }}, {{ event.starttime }}-{{ event.endtime }}</p>
+                <!--<a href="#" class="rsvp button">RSVP &amp; Details</a>-->
+            </div>
+        </article>
 
-            {% if pastevents|length>1 %}
-                <hr>
-            {% endif %}
-        {% endfor %}
-        <br/>
-    {% endif %}
+        {% if pastevents|length>1 %}
+            <hr>
+        {% endif %}
+    {% endfor %}
+    <br/>
+
     </div>
 {% endmacro %}
