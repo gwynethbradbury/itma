@@ -1,31 +1,110 @@
-
 {% macro servicestatus(services=None) %}
     <div class="container" style="background-color: #ceffff">
-    <div class="row">
-        <h2>Current Status of SoGE IT Service</h2>
-        {% for s in services %}
-            <p>{{ s.name }} is <button class="btn {{ s.status_style() }}">{{ s.status_content() }}</button> </p>
-        {% endfor %}
-    </div>
-    </div>
-{% endmacro %}
-
-{% macro usage() %}
-    <div class="container" style="background-color: #ceffff">
         <div class="row">
-            <h2>How SoGE IT Services Are Currently Being Used</h2>
-            <h3>Network Traffic</h3>
-              <h3>Cluster Load</h3>
-            <div id="chart_div"></div>
-    {#        https://developers.google.com/chart/interactive/docs/quick_start #}
+            <h2>Current Status of SoGE IT Service</h2>
+            {% for s in services %}
+                <p>{{ s.name }} is
+                    <button class="btn {{ s.status_style() }}">{{ s.status_content() }}</button>
+                </p>
+            {% endfor %}
         </div>
     </div>
 {% endmacro %}
 
-{% macro whatson(events=None) %}
-What's on
-    {% if events %}
-    {% for e in events %}
-    {% endfor %}
+{% macro usage() %}
+    <div class="container" style="background-color: #ffffff; align-content: center" align="center">
+        <div class="row">
+            <h2>How SoGE IT Services are currently being used</h2>
+
+            <h3>Network Traffic</h3>
+            <div id="linechart_material"></div>
+
+            <h3>Cluster Load</h3>
+            <div id="chart_div"></div>
+            {#        https://developers.google.com/chart/interactive/docs/quick_start #}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro whatson( pastevents=[],nowevents=[], futureevents=[]) %}
+    <div class="container" style="background-color: #ffffff" >
+
+    {% if nowevents|length>0 %}
+        <h3>Today</h3>
+        {% for event in nowevents %}
+            <article class="event">
+
+                <div class="event-date">
+                    <p class="event-monthnow">{{ event.eventdate_str() }}</p>
+                    <p class="event-day">{{ event.eventday_str() }}</p>
+                </div>
+
+                <div class="event-desc">
+                    <h4 class="event-desc-header">{{ event.title }}</h4>
+                    <p class="event-desc-detail"><span class="event-desc-time">{{ event.subtitle }}</span></p>
+                    <p>{{ eventdescription }}<br/>{{ event.room }}, {{ event.starttime }}-{{ event.endtime }}</p>
+                    <!--<a href="#" class="rsvp button">RSVP &amp; Details</a>-->
+                </div>
+            </article>
+
+            {% if nowevents|length>1 %}
+                <hr>
+            {% endif %}
+        {% endfor %}
+
+
     {% endif %}
+
+    {% for event in futureevents %}
+        <br/>
+        <h3>Upcoming Events</h3>
+        <article class="event">
+
+            <div class="event-date">
+                <p class="event-monthfuture">{{ event.eventdate_str() }}</p>
+                <p class="event-day">{{ event.eventday_str() }}</p>
+            </div>
+
+            <div class="event-desc">
+                <h4 class="event-desc-header">{{ event.title }}</h4>
+                <p class="event-desc-detail"><span class="event-desc-time">{{ event.subtitle }}</span></p>
+                <p>{{ eventdescription }}<br/>{{ event.room }}, {{ event.starttime }}-{{ event.endtime }}</p>
+                <!--<a href="#" class="rsvp button">RSVP &amp; Details</a>-->
+            </div>
+        </article>
+
+        {% if futureevents|length>1 %}
+            <hr>
+        {% endif %}
+    {% endfor %}
+
+
+    {% if pastevents|length>0 %}
+        <br/>
+
+        <h3>Past Events</h3>
+
+        {% for event in pastevents %}
+            <article class="event">
+
+                <div class="event-date">
+                    <p class="event-monthpast">{{ event.eventdate_str() }}</p>
+                    <p class="event-day">{{ event.eventday_str() }}</p>
+                </div>
+
+                <div class="event-desc">
+                    <h4 class="event-desc-header">{{ event.title }}</h4>
+                    <p class="event-desc-detail"><span class="event-desc-time">{{ event.subtitle }}</span></p>
+                    <p>{{ eventdescription }}<br/>{{ event.room }}, {{ event.starttime }}-{{ event.endtime }}</p>
+                    <!--<a href="#" class="rsvp button">RSVP &amp; Details</a>-->
+                </div>
+            </article>
+
+            {% if pastevents|length>1 %}
+                <hr>
+            {% endif %}
+        {% endfor %}
+        <br/>
+    {% endif %}
+    </div>
 {% endmacro %}

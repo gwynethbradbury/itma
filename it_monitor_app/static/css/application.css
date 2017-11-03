@@ -119,3 +119,55 @@
 .mission-item-additional-content {
     margin-top: 10px;
 }
+
+
+
+
+
+
+
+.event{
+}
+.event-desc{
+    float: left;
+
+}
+.event-date {
+    border: thick;
+    border-color: #0a0a0a;
+    width: 100px;
+    height: 100px;
+    background-color: #f0f0f0;
+    border-radius: 20px;
+    float: left;
+    margin-right: 20px;
+}
+.event-day{
+    vertical-align: middle;
+    text-align: center;
+    font-size: x-large;
+}
+.event-monthpast{
+    background-color: #e7e7e7;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    text-align: center;
+    vertical-align: middle;
+    font-size: large;
+}
+.event-monthfuture{
+    background-color: #e7e7e7;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    text-align: center;
+    vertical-align: middle;
+    font-size: large;
+}
+.event-monthnow{
+    background-color: #d6f5d9;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    text-align: center;
+    vertical-align: middle;
+    font-size: large;
+}

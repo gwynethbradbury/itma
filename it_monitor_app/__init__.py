@@ -12,11 +12,18 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://{}:{}@{}/{}'\
 app.secret_key = 'super secret key'
 app.config['SESSION_TYPE'] = 'filesystem'
 
-SQLALCHEMY_BINDS={'it_monitor_app':'mysql+pymysql://{}:{}@{}/{}'\
+SQLALCHEMY_BINDS={}
+SQLALCHEMY_BINDS['it_monitor_app']='mysql+pymysql://{}:{}@{}/{}'\
     .format(dbconfig.db_user,
             dbconfig.db_password,
             dbconfig.db_hostname,
-            dbconfig.db_name)}
+            dbconfig.db_name)
+
+SQLALCHEMY_BINDS['iaas']='mysql+pymysql://{}:{}@{}/{}'\
+    .format(dbconfig.db_user,
+            dbconfig.db_password,
+            dbconfig.db_hostname,
+            'iaas')
 app.config['SQLALCHEMY_BINDS'] =SQLALCHEMY_BINDS
 
 db = SQLAlchemy(app)

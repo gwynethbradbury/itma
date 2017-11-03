@@ -8,30 +8,49 @@ from it_monitor_app.auth.iaasldap import LDAPUser as LDAPUser
 
 current_user = LDAPUser()
 
+import imp
+
+import dbconfig
+if dbconfig.is_server_version:
+    p='/var/www/html/dbas/main/iaas/iaas.py'
+else:
+    p = '/Users/cenv0594/Repositories/dbas-dev/main/iaas/iaas.py'
+import sys
+
+# the mock-0.3.1 dir contains testcase.py, testutils.py & mock.py
+sys.path.append(p)
+import imp
+from datetime import datetime
+
+iaas = imp.load_source('iaas', p)
+
+
+
+
+
+
 @app.context_processor
 def inject_paths():
     return dict(LDAPUser=LDAPUser())
 
+
 @app.route('/')
 def index():
     services = Service.query.order_by(Service.id.asc()).all()
-    return render_template('home.html', services=services)
+    nowevents, futureevents, pastevents = getEvents()
+    return render_template('home.html', services=services, pastevents=pastevents, nowevents=nowevents, futureevents=futureevents)
+
 
 @app.route('/service_status')
 def service_status():
     services = Service.query.order_by(Service.id.asc()).all()
     return render_template('service_status.html', services=services)
 
+
 @app.route('/usage')
 def usage():
     services = Service.query.order_by(Service.id.asc()).all()
     return render_template('usage.html', services=services)
-
-
-
-
-
-
 
 
 @app.route('/wakeonlan', methods=['POST', 'GET'])
@@ -59,6 +78,7 @@ def wakeonlan():
 
 
     return render_template('wakeonlan.html',wol_computers=wol_computers)
+
 
 @app.route('/changepasswd', methods=["GET", "POST"])
 def changepasswd():
@@ -88,8 +108,8 @@ def changepasswd():
     #         abort(404)
     #
 
-
     return render_template('changepasswd.html')
+
 
 @app.route('/software', methods=['POST', 'GET'])
 def softwares():
@@ -124,6 +144,7 @@ def softwares():
 
     return render_template('software.html',all_software=softwares, this_software_user=this_software_user)
 
+
 @app.route('/request_software')
 def request_software():
     sid = request.args.get('sid')
@@ -141,6 +162,7 @@ def request_software():
 
     return redirect('/software')
 
+
 def make_support_request_for_software(sid):
     sw = software.query.get_or_404(sid)
     emailheader="Software installation request"
@@ -152,6 +174,26 @@ def make_support_request_for_software(sid):
     return
     #todo: send the request
 
+
 @app.route('/help')
 def help():
     return redirect("https://it.ouce.ox.ac.uk")
+
+
+
+
+def getEvents():
+    events = iaas.IaasEvent.query.order_by(iaas.IaasEvent.eventdate.asc()).all()
+    pastevents = []
+    futureevents = []
+    nowevents = []
+    for e in events:
+        if e.eventdate < datetime.now().date():
+            pastevents.append(e)
+        elif e.eventdate > datetime.now().date():
+            futureevents.append(e)
+        else:
+            nowevents.append(e)
+
+    return [ nowevents, futureevents, pastevents]
+
