@@ -32,7 +32,7 @@
     <div class="row">
         <h3>Today ({{ nowevents|length }})</h3>
         {% for event in nowevents %}
-            <article class="event">
+            <div><article class="event">
 
                 <div class="event-date">
                     <p class="event-monthnow">{{ event.eventdate_str() }}</p>
@@ -52,6 +52,7 @@
 
                 <hr>
             {% endif %}
+            </div>
         {% endfor %}
 
 
@@ -61,7 +62,7 @@
     <div class="row">
         <h3>Upcoming Events ({{ futureevents|length }})</h3>
         {% for event in futureevents %}
-            <article class="event">
+            <div><article class="event">
 
                 <div class="event-date">
                     <p class="event-monthfuture">{{ event.eventdate_str() }}</p>
@@ -80,6 +81,7 @@
                                 <br/>
                 <hr>
             {% endif %}
+            </div>
         {% endfor %}
 
 
@@ -89,6 +91,7 @@
         <h3>Past Events ({{ pastevents|length }})</h3>
 
         {% for event in pastevents %}
+            <div>
             <article class="event">
 
                 <div class="event-date">
@@ -108,6 +111,7 @@
                 <br/>
                 <hr>
             {% endif %}
+            </div>
         {% endfor %}
     </div>
 
