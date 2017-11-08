@@ -26,10 +26,9 @@
     </div>
 {% endmacro %}
 
-{% macro whatson( pastevents=[],nowevents=[], futureevents=[]) %}
+{% macro whatson( nowevents=[], futureevents=[]) %}
     <div class="container" style="background-color: #ffffff" >
 
-    <div class="row">
         <h3>Today ({{ nowevents|length }})</h3>
         {% for event in nowevents %}
             <div><article class="event">
@@ -56,10 +55,8 @@
         {% endfor %}
 
 
-    </div>
 
 
-    <div class="row">
         <h3>Upcoming Events ({{ futureevents|length }})</h3>
         {% for event in futureevents %}
             <div><article class="event">
@@ -85,11 +82,16 @@
         {% endfor %}
 
 
+
     </div>
-    <div class="row">
+{% endmacro %}
+
+{% macro whatsonpast( pastevents=[]) %}
+    <div class="container" style="background-color: #ffffff" >
+
 
         <h3>Past Events ({{ pastevents|length }})</h3>
-
+        <br/>
         {% for event in pastevents %}
             <div>
             <article class="event">
@@ -98,7 +100,7 @@
                     <p class="event-monthpast">{{ event.eventdate_str() }}</p>
                     <p class="event-day">{{ event.eventday_str() }}</p>
                 </div>
-
+{##}
                 <div class="event-desc">
                     <h4 class="event-desc-header">{{ event.title }}</h4>
                     <p class="event-desc-detail"><span class="event-desc-time">{{ event.subtitle }}</span></p>
@@ -107,13 +109,13 @@
                 </div>
             </article>
 
+
             {% if pastevents|length>1 %}
                 <br/>
                 <hr>
             {% endif %}
             </div>
         {% endfor %}
-    </div>
 
     </div>
 {% endmacro %}

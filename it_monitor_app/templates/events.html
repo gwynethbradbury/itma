@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% import 'contents_macros.html' as layout with context -%}
+
+{% block body %}
+
+{{ layout.whatson( nowevents, futureevents) }}
+{{ layout.whatsonpast(pastevents) }}
+
+{% endblock %}

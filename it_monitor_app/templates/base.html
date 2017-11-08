@@ -162,18 +162,6 @@
                 <ul class="nav navbar-nav">
                     <a class="navbar-brand" href="{{ url_for('index') }}">IT Support</a>
 
-
-{#                    <li class="dropdown">#}
-{#                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ current_user.username }}#}
-{#                            <span class="caret"></span>#}
-{#                        </a>#}
-{#                        <ul class="dropdown-menu">#}
-{#                            <li><a href="{{ url_for('profile') }}">Profile</a></li>#}
-{#                            <li><a href="{{ url_for('settings') }}">Settings</a></li>#}
-{#                            <li><a href="{{ url_for('signout') }}">Log out</a></li>#}
-{#                        </ul>#}
-{#                    </li>#}
-
                     <li class="{{ url_for('service_status') | is_current_page }}">
                         <a href="{{ url_for('service_status') }}">Service Status</a>
                     </li>
@@ -182,24 +170,32 @@
                         <a href="{{ url_for('usage') }}">Usage</a>
                     </li>
 
-                    <li class="{{ url_for('changepasswd') | is_current_page }}">
-                        <a href="{{ url_for('changepasswd') }}">Change Password</a>
-                    </li>
-
-                    <li class="{{ url_for('help') | is_current_page }}">
-                        <a href="{{ url_for('help') }}">Help</a>
+                    <li class="{{ url_for('events') | is_current_page }}">
+                        <a href="{{ url_for('events') }}">Events</a>
                     </li>
 
 
 {#                    {% if not current_user.is_authenticated %}#}
 {#                        <a class="navbar-brand" href="{{ url_for('signup') }}">Log in / Register</a>#}
 {#                    {% else %}#}
-                    <li class="{{ url_for('wakeonlan') | is_current_page }}">
-                        <a href="{{ url_for('wakeonlan') }}">Wake on LAN</a>
+{#                    {% if LDAPUser %}#}
+                    <li class="dropdown {{ (url_for('changepasswd') | is_current_page) or (url_for('wakeonlan') | is_current_page) or (url_for('softwares') | is_current_page) }}">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ LDAPUser.uid_trim() }}
+                        <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ url_for('changepasswd') }}">Change Password</a></li>
+                            <li><a href="{{ url_for('wakeonlan') }}">Wake on LAN</a></li>
+                            <li><a href="{{ url_for('softwares') }}">Software</a></li>
+                        </ul>
                     </li>
+{#                    {% endif %}#}
 
-                    <li class="{{ url_for('softwares') | is_current_page }}">
-                        <a href="{{ url_for('softwares') }}">Software</a>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+
+                    <li class="{{ url_for('help') | is_current_page }}">
+                        <a href="{{ url_for('help') }}">HELP</a>
                     </li>
 {#                    {% endif %}#}
                 </ul>
@@ -211,13 +207,11 @@
             {% with messages = get_flashed_messages(with_categories=True) %}
                 {% if messages %}
                     {% for category, m in messages %}
-                        {% if category %}
+                        <div class="alert {% if category %}
                             {# alert-error changed to alert-danger in bootstrap 3, mapping is for backwards compatibility #}
                             {% set mapping = {'message': 'info', 'error': 'danger'} %}
-                            <div class="alert alert-{{ mapping.get(category, category) }} alert-dismissable">
-                        {% else %}
-                            <div class="alert alert-dismissable">
-                        {% endif %}
+                            alert-{{ mapping.get(category, category) }}
+                        {% endif %} alert-dismissable">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                         {{ m }}
                         </div>

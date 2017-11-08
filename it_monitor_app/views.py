@@ -1,10 +1,15 @@
-from flask import render_template, request, redirect, url_for, abort, jsonify, flash
+from flask import render_template, request, redirect, url_for, abort, jsonify, flash, session
 from collections import defaultdict
 from . import app, db
 from models import Status, Color, Service, software, software_user, user_license, wol_computer
 from signals import task_created, mission_created
 import time
 from it_monitor_app.auth.iaasldap import LDAPUser as LDAPUser
+
+from threading import Lock
+from flask_socketio import SocketIO, emit, join_room, leave_room, \
+    close_room, rooms, disconnect
+async_mode = None
 
 current_user = LDAPUser()
 
@@ -24,21 +29,28 @@ from datetime import datetime
 
 iaas = imp.load_source('iaas', p)
 
+socketio = SocketIO(app)
+thread = None
+thread_lock = Lock()
 
 
 
-
-
+# region 'my code'
 @app.context_processor
 def inject_paths():
-    return dict(LDAPUser=LDAPUser())
+    return dict(LDAPUser=LDAPUser(),debug=dbconfig.debug)
 
 
 @app.route('/')
 def index():
     services = Service.query.order_by(Service.id.asc()).all()
     nowevents, futureevents, pastevents = getEvents()
-    return render_template('home.html', services=services, pastevents=pastevents, nowevents=nowevents, futureevents=futureevents)
+    return render_template('home.html', services=services, nowevents=nowevents, futureevents=futureevents, async_mode=socketio.async_mode)
+
+@app.route('/events')
+def events():
+    nowevents, futureevents, pastevents = getEvents()
+    return render_template('events.html', pastevents=pastevents, nowevents=nowevents, futureevents=futureevents)
 
 
 @app.route('/service_status')
@@ -178,6 +190,106 @@ def make_support_request_for_software(sid):
 @app.route('/help')
 def help():
     return redirect("https://it.ouce.ox.ac.uk")
+
+# endregion
+
+
+def background_thread():
+    """Example of how to send server generated events to clients."""
+    count = 0
+    while True:
+        socketio.sleep(1)
+        count += 1
+        socketio.emit('my_response',
+                      {'data': 'Server generated event '+str(datetime.utcnow()), 'count': count},
+                      namespace='/systemusage')
+
+
+# @app.route('/')
+# def index():
+#     return render_template('index.html', async_mode=socketio.async_mode)
+
+
+@socketio.on('my_event', namespace='/systemusage')
+def test_message(message):
+    session['receive_count'] = session.get('receive_count', 0) + 1
+    emit('my_response',
+         {'data': message['data'], 'count': session['receive_count']})
+
+
+@socketio.on('my_broadcast_event', namespace='/systemusage')
+def test_broadcast_message(message):
+    session['receive_count'] = session.get('receive_count', 0) + 1
+    emit('my_response',
+         {'data': message['data'], 'count': session['receive_count']},
+         broadcast=True)
+
+
+# @socketio.on('join', namespace='/systemusage')
+# def join(message):
+#     join_room(message['room'])
+#     session['receive_count'] = session.get('receive_count', 0) + 1
+#     emit('my_response',
+#          {'data': 'In rooms: ' + ', '.join(rooms()),
+#           'count': session['receive_count']})
+#
+#
+# @socketio.on('leave', namespace='/systemusage')
+# def leave(message):
+#     leave_room(message['room'])
+#     session['receive_count'] = session.get('receive_count', 0) + 1
+#     emit('my_response',
+#          {'data': 'In rooms: ' + ', '.join(rooms()),
+#           'count': session['receive_count']})
+#
+#
+# @socketio.on('close_room', namespace='/systemusage')
+# def close(message):
+#     session['receive_count'] = session.get('receive_count', 0) + 1
+#     emit('my_response', {'data': 'Room ' + message['room'] + ' is closing.',
+#                          'count': session['receive_count']},
+#          room=message['room'])
+#     close_room(message['room'])
+#
+#
+# @socketio.on('my_room_event', namespace='/systemusage')
+# def send_room_message(message):
+#     session['receive_count'] = session.get('receive_count', 0) + 1
+#     emit('my_response',
+#          {'data': message['data'], 'count': session['receive_count']},
+#          room=message['room'])
+#
+#
+# @socketio.on('disconnect_request', namespace='/systemusage')
+# def disconnect_request():
+#     session['receive_count'] = session.get('receive_count', 0) + 1
+#     emit('my_response',
+#          {'data': 'Disconnected!', 'count': session['receive_count']})
+#     disconnect()
+
+
+@socketio.on('my_ping', namespace='/systemusage')
+def ping_pong():
+    emit('my_pong')
+
+
+@socketio.on('connect', namespace='/systemusage')
+def test_connect():
+    global thread
+    with thread_lock:
+        if thread is None:
+            thread = socketio.start_background_task(target=background_thread)
+    emit('my_response', {'data': 'Connected', 'count': 0})
+
+
+@socketio.on('disconnect', namespace='/systemusage')
+def test_disconnect():
+    print('Client disconnected', request.sid)
+
+
+
+
+
 
 
 
