@@ -27,11 +27,11 @@
 
         var options = {
                         chart: {
-                            title: 'Box Office Earnings in First Two Weeks of Opening',
-                            subtitle: 'in millions of dollars (USD)'
+                            title: 'system usage in the last hour',
+                            subtitle: '(unts)'
                         },
-            width: 900,
-            height: 500
+            width: 700,
+            height: 400
         };
 
         var EL;
@@ -40,7 +40,6 @@
         google.charts.load('current', {'packages':['line']});
 
 
-{#        google.charts.setOnLoadCallback(drawChart3);#}
 
 
         google.charts.setOnLoadCallback(
@@ -49,97 +48,38 @@
         function stuff() {
 
             data = new google.visualization.DataTable();
-            data.addColumn('number', 'foo');
-            data.addColumn('number', 'bah');
-            data.addColumn('number', 'mushroom');
-            data.addColumn('number', 'potato');
-
-            EL = document.getElementById('linechart_material2')
+            data.addColumn('number','time');
+            data.addColumn('number','network traffic');
+            data.addColumn('number','cluster use');
+            data.addColumn('number','potato');
             data.addRows(testrows1);
 
+            EL = document.getElementById('linechart_material2')
+
+                  chart2 = new google.charts.Line(EL);
             drawChart3(data,EL);
-{#            drawChart('barchart',data,'linechart_material2',options);#}
         }
         function drawChart3(data,EL) {
-{#                  var options = {#}
-{#                        chart: {#}
-{#                            title: 'Box Office Earnings in First Two Weeks of Opening',#}
-{#                            subtitle: 'in millions of dollars (USD)'#}
-{#                        },#}
-{#                                      width: 900,#}
-{#                                      height: 500#}
-{#                                  };#}
-                  chart2 = new google.charts.Line(EL);
                   lineChart = chart2;
                   chart2.draw(data, google.charts.Line.convertOptions(options));
-                updatedata();
         }
 
-        function updatedata() {
-{#                  chart2 = new google.charts.Line(EL);#}
-{#                  lineChart = chart2;#}
-                  chart2.draw(data, google.charts.Line.convertOptions(options));
+        function updatedata(data_in) {
+            if(data==null | data_in==null){
+                return;
+            }
+            data = new google.visualization.DataTable();
+            data.addColumn('number','time');
+            data.addColumn('number','network traffic');
+            data.addColumn('number','cluster use');
+            data.addColumn('number','potato');
+            data.addRows(data_in);
+            drawChart3(data,EL);
         }
 
 
 
 
-
-
-
-
-{#var testRows = [#}
-{#    ['Test-A', 4, 3],#}
-{#    ['Test-B', 1, 2],#}
-{#    ['Test-C', 3, 4],#}
-{#    ['Test-D', 2, 0],#}
-{#    ['Test-E', 2, 5]#}
-{#];#}
-{#var testRow = ['Test-F', 8, 1];#}
-{#var data = null;#}
-{##}
-{#google.load("visualization", "1", {#}
-{#    packages: ["corechart", 'table']#}
-{#});#}
-{##}
-{#    google.setOnLoadCallback(function () {#}
-{#    data = new google.visualization.DataTable();#}
-{#    data.addColumn('string', 'Task');#}
-{#    data.addColumn('number', 'Hours per Day');#}
-{#    data.addColumn('number', 'How Sexy');#}
-{#    data.addRows(testRows);#}
-{#    drawChart('tablechart', 'div_id_1', data, null);#}
-{#    drawChart('columnChart', 'div_id_2', data, null);#}
-{#});#}
-{##}
-{#var columnChart, tableChart;#}
-{#document.getElementById('change-btn').onclick=function() {#}
-{#    data.removeRow(0);#}
-{#    data.insertRows(0, [['Test-A-changed', 14, 13]]);#}
-{#    columnChart.draw(data);#}
-{#    tableChart.draw(data);#}
-{#}#}
-{##}
-{#function drawChart(chartType, containerID, dataTablo, options) {#}
-{#    var containerDiv = document.getElementById(containerID);#}
-{#    var chart = false;#}
-{#    if (chartType.toUpperCase() == 'BARCHART') {#}
-{#        chart = new google.visualization.BarChart(containerDiv);#}
-{#    } else if (chartType.toUpperCase() == 'COLUMNCHART') {#}
-{#        chart = new google.visualization.ColumnChart(containerDiv);#}
-{#        columnChart = chart;#}
-{#    } else if (chartType.toUpperCase() == 'PIECHART') {#}
-{#        chart = new google.visualization.PieChart(containerDiv);#}
-{#    } else if (chartType.toUpperCase() == 'TABLECHART') {#}
-{#        chart = new google.visualization.Table(containerDiv);#}
-{#        tableChart = chart;#}
-{#    }#}
-{##}
-{#    if (chart == false) {#}
-{#        return false;#}
-{#    }#}
-{#    chart.draw(dataTablo, options);#}
-{#}#}
 
 
 
@@ -173,31 +113,8 @@
             // section of the page.
             socket.on('my_response', function(msg) {
                 $('#log').text('Received #' + msg.count + ': ' + msg.data).html();
+                updatedata(msg.graph_data);
 
-                   var data = []
-{#                new google.visualization.DataTable();#}
-{#                  data.addColumn('number', 'foo');#}
-{#                  data.addColumn('number', 'bah');#}
-{#                  data.addColumn('number', 'bat');#}
-{#                  data.addColumn('number', 'munchkin');#}
-{##}
-{#                  data.addRows([#}
-{#                    [1,  37.8, 80.8, 41.8],#}
-{#                    [2,  30.9, 69.5, 32.4],#}
-{#                    [3,  25.4,   57, 25.7],#}
-{#                    [4,  11.7, 18.8, 10.5],#}
-{#                    [5,  11.9, 17.6, 10.4],#}
-{#                    [6,   8.8, 13.6,  7.7],#}
-{#                    [7,   7.6, 12.3,  9.6],#}
-{#                    [8,  12.3, 29.2, 10.6],#}
-{#                    [9,  16.9, 42.9, 14.8],#}
-{#                    [10, 12.8, 30.9, 11.6],#}
-{#                    [11,  5.3,  7.9,  4.7],#}
-{#                    [12,  6.6,  8.4,  5.2],#}
-{#                    [13,  4.8,  6.3,  3.6],#}
-{#                    [14,  4.2,  6.2,  3.4]#}
-{#                  ]);#}
-{#                  drawChart3(data);#}
             });
 
             // Interval function that tests message latency by sending a "ping"
@@ -221,7 +138,6 @@
                 for (var i = 0; i < ping_pong_times.length; i++)
                     sum += ping_pong_times[i];
                 $('#ping-pong').text(Math.round(10 * sum / ping_pong_times.length) / 10);
-                updatedata();
             });
 
             // Handlers for the different forms in the page.
@@ -304,11 +220,7 @@
 {#        <input type="submit" value="Disconnect">#}
 {#    </form>#}
     <div id="log"></div>
-    <button id="change-btn">change columns</button>
-<div id="div_id_1"></div>
-<div id="div_id_2"></div>
 
-            <div id="linechart_material2"></div>
 {% endif %}
 
 

@@ -199,9 +199,12 @@ def background_thread():
     """Example of how to send server generated events to clients."""
     count = 0
     while True:
-        socketio.sleep(1)
+        socketio.sleep(5)
         count += 1
-        graph_data = math.sin(0.0)#range(60))
+        graph_data = []
+        for j in range(360):
+            i=2*3.14159*j/360
+            graph_data.append([j,math.sin(i),math.cos(i),max(min(math.tan(i),2),-2)])
         socketio.emit('my_response',
                       {'data': 'Server generated event '+str(datetime.utcnow()),
                        'count': count,
