@@ -10,6 +10,7 @@ from threading import Lock
 from flask_socketio import SocketIO, emit, join_room, leave_room, \
     close_room, rooms, disconnect
 async_mode = None
+import math
 
 current_user = LDAPUser()
 
@@ -200,8 +201,11 @@ def background_thread():
     while True:
         socketio.sleep(1)
         count += 1
+        graph_data = math.sin(0.0)#range(60))
         socketio.emit('my_response',
-                      {'data': 'Server generated event '+str(datetime.utcnow()), 'count': count},
+                      {'data': 'Server generated event '+str(datetime.utcnow()),
+                       'count': count,
+                       'graph_data': graph_data},
                       namespace='/systemusage')
 
 
