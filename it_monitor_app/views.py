@@ -46,12 +46,20 @@ def inject_paths():
 def index():
     services = Service.query.order_by(Service.id.asc()).all()
     nowevents, futureevents, pastevents = getEvents()
-    return render_template('home.html', services=services, nowevents=nowevents, futureevents=futureevents, async_mode=socketio.async_mode)
+    news = getNews()
+    return render_template('home.html', services=services, nowevents=nowevents, futureevents=futureevents,
+                           news=news,
+                           async_mode=socketio.async_mode)
 
 @app.route('/events')
 def events():
     nowevents, futureevents, pastevents = getEvents()
     return render_template('events.html', pastevents=pastevents, nowevents=nowevents, futureevents=futureevents)
+
+@app.route('/news')
+def news():
+    news = getNews()
+    return render_template('news.html', news=news)
 
 
 @app.route('/service_status')
@@ -85,8 +93,8 @@ def wakeonlan():
 
         elif request.form.get('wake') == "Remote Desktop":
             flash("no rdp method entered", category="message")
-        else:
-            flash("something went wrong",category="error")
+        # else:
+        #     flash("something went wrong",category="error")
 
 
 
@@ -194,6 +202,15 @@ def help():
 
 # endregion
 
+from datetime import datetime, timedelta, date
+from json import dumps
+
+def json_serial(obj):
+    """JSON serializer for objects not serializable by default json code"""
+
+    if isinstance(obj, (datetime, date)):
+        return obj.isoformat()
+    raise TypeError ("Type %s not serializable" % type(obj))
 
 def background_thread():
     """Example of how to send server generated events to clients."""
@@ -201,10 +218,16 @@ def background_thread():
     while True:
         socketio.sleep(5)
         count += 1
+        t=datetime.utcnow()
         graph_data = []
-        for j in range(360):
-            i=2*3.14159*j/360
-            graph_data.append([j,math.sin(i),math.cos(i),max(min(math.tan(i),2),-2)])
+        for j in range(60):
+            i=j
+
+            d=[int(time.mktime((t-timedelta(minutes=j)).timetuple())) * 1000]
+
+            for n in range(10):
+                d.append(math.sin(n*6+3*2*3.14159*(t-timedelta(minutes=j)).minute*6/360)+2)
+            graph_data.append(d)
         socketio.emit('my_response',
                       {'data': 'Server generated event '+str(datetime.utcnow()),
                        'count': count,
@@ -315,4 +338,9 @@ def getEvents():
             nowevents.append(e)
 
     return [ nowevents, futureevents, pastevents]
+
+
+def getNews():
+    news = iaas.News.query.all()#order_by(iaas.IaasEvent.eventdate.asc()).all()
+    return news
 

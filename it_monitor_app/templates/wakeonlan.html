@@ -15,15 +15,15 @@
                     <li style="padding-top: 10px">{{ w.computer }}:
                         <form action="{{ url_for("wakeonlan", computer_id=w.id) }}" method="POST">
                             {% if w.get_status() == 3 %}
-                                <input type="submit" class="btn disabled {{ w.status_style() }}" name="wake" value="Awake"/> -
+                                <button class="btn disabled {{ w.status_style() }}">Awake</button>
                                 <input type="submit" class="btn {{ w.status_style() }}" name="wake" value="Remote Desktop"/>
                             {% elif w.get_status() == 2 %}
                                 <p>Problems connecting to {{ w.computer }}, please contact SoGE IT.</p>
-                                <input type="submit" class="btn disabled {{ w.status_style() }}" name="wake" value="Wake"/> -
-                                <input type="submit" class="btn disabled {{ w.status_style() }}" name="wake" value="Remote Desktop"/>
+                                <button class="btn disabled {{ w.status_style() }}">Wake"</button>
+                                <button class="btn disabled {{ w.status_style() }}">Remote Desktop</button>
                             {% else %}
                                 <input type="submit" class="btn {{ w.status_style() }}" name="wake" value="Wake"/> -
-                                <input type="submit" class="btn disabled {{ w.status_style() }}" name="wake" value="Remote Desktop"/>
+                                <button class="btn disabled {{ w.status_style() }}">Remote Desktop</button>
                             {% endif %}
                         </form>
                     </li>
