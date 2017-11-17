@@ -21,9 +21,9 @@
     <div class="container" >
 
         <div class="row">
-            <div class="col">
-                <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-                    <div class="carousel-inner">
+            <div class="col {% if not LDAPUser.uid_trim()=="soge" %}col-sm-12 col-lg-9 col-md-12{% endif %}">
+                <div id="carouselExampleControls" class="carousel slide w-100" data-ride="carousel">
+                    <div class="carousel-inner" style="min-height: 1000px">
                         <div class="carousel-item active">
 {#                            <a href="{{ url_for('usage') }}">more...</a>#}
                             {{ layout.usage() }}
@@ -52,19 +52,19 @@
             </div>
 
             {% if not LDAPUser.uid_trim()=="soge" %}
-            <div class="col-3">
+            <div class="col col-lg-3 col-md-9">
                 <div class="row">
-                    <div class="card">
+                    <div class="card w-100">
                         <div class="card-body">
                             <h4 class="card-title">IT News</h4>
                             <p class="card-text">{{ layout.newsbrief(news) }}</p>
                             <a href="{{ url_for('news') }}" class="btn btn-primary">more..</a>
                         </div>
                     </div>
-                </div>
-                <div class="row">
+{#                </div>#}
+{#                <div class="row">#}
 
-                    <div class="card" >
+                    <div class="card w-100" >
 {#                        <img class="card-img-top" src="{{ url_for('static', filename='img/calendar.png') }}" alt="OUCE GitLab"/>#}
                         <div class="card-body">
                             <h4 class="card-title">IT Events</h4>
@@ -72,11 +72,11 @@
                             <a href="{{ url_for('events') }}" class="btn btn-primary">more..</a>
                         </div>
                     </div>
-                </div>
+{#                </div>#}
+{##}
+{#                <div class="row">#}
 
-                <div class="row">
-
-                    <div class="card" >
+                    <div class="card w-100" >
                         <a  href="https://gitlab.ouce.ox.ac.uk">
                             <img class="card-img-top" src="{{ url_for('static', filename='img/gitlab.png') }}" alt="OUCE GitLab"/>
                         </a>
@@ -87,11 +87,11 @@
                         </div>
                     </div>
 
-                </div>
+{#                </div>#}
+{##}
+{#                <div class="row">#}
 
-                <div class="row">
-
-                    <div class="card" >
+                    <div class="card w-100" >
                         <a  href="https://db.ouce.ox.ac.uk">
                             <img class="card-img-top" src="{{ url_for('static', filename='img/fruit_bowl_icon_color.png') }}" alt="OUCE GitLab"/>
                         </a>
