@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{#{% import 'contents_macros.html' as layout with context -%}#}
+
+{% block body %}
+
+    <div class="container" >
+
+        <div class="row">
+            <div class="col">
+                <h2>SoGE IT News</h2>
+                <h4>{{ news.title}}</h4>
+                <p>{{news.body|safe}}<p>
+                <p><i>Published: {{ news.created_on }} (Updated: {{ news.updated_on }}) </i></p>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

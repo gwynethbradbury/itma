@@ -45,8 +45,8 @@ def inject_paths():
 @app.route('/')
 def index():
     services = Service.query.order_by(Service.id.asc()).all()
-    nowevents, futureevents, pastevents = getEvents()
-    news = getNews()
+    nowevents, futureevents, pastevents = getEvents(5)
+    news = getNews(5)
     return render_template('home.html', services=services, nowevents=nowevents, futureevents=futureevents,
                            news=news,
                            async_mode=socketio.async_mode)
@@ -55,6 +55,51 @@ def index():
 def events():
     nowevents, futureevents, pastevents = getEvents()
     return render_template('events.html', pastevents=pastevents, nowevents=nowevents, futureevents=futureevents)
+
+# @app.route('/events/<int:event_id>', methods=['POST', 'GET'])
+# def event(event_id):
+@app.route('/news/<int:news_id>', methods=['POST', 'GET'])
+def news_item(news_id):
+    news_item = iaas.News.query.get_or_404(news_id)
+
+    if request.method == 'POST':
+        try:
+            pass
+            # event.description = request.form.get('description')
+            # event.venue_id = request.form.get('storyline_id')
+            # event.date = request.form.get('nextdate')
+            # event.startat = request.form.get('starttime')
+            # event.endat = request.form.get('endtime')
+            # if request.form.get('repeatsweekly') == "Yes":
+            #     event.status = 2
+            #     event.day = Day[request.form.get('day_id')].value
+            # elif request.form.get('repeatreminder'):
+            #     event.status = 3
+            # else:
+            #     event.status = 1
+            #
+            # for d in dances:
+            #     if d.possibletags.count():
+            #         for t in d.possibletags:
+            #             x = (request.form.get(str(d.id) + '_' + str(t.id)) == str(t.id))
+            #             y = (t in event.tags)
+            #             if not x == y:
+            #                 set_tag(event_id, t.id)
+            #                 set_genre(event_id, t.dance.id)
+            #     else:
+            #         x = (request.form.get(str(d.id) + '_') == 'genre')
+            #         y = (d in event.dances)
+            #         if not x == y:
+            #             set_genre(event_id, d.id)
+            #
+            # db.session.add(event)
+            # db.session.commit()
+        except KeyError:
+            abort(400)
+
+        flash("Saved", category='message')
+
+    return render_template('news_item.html', news=news_item)
 
 @app.route('/news')
 def news():
@@ -324,8 +369,12 @@ def test_disconnect():
 
 
 
-def getEvents():
-    events = iaas.IaasEvent.query.order_by(iaas.IaasEvent.eventdate.asc()).all()
+def getEvents(lim=-1):
+    if lim<0:
+        events = iaas.IaasEvent.query.order_by(iaas.IaasEvent.eventdate.asc()).all()
+    else:
+        events = iaas.IaasEvent.query.order_by(iaas.IaasEvent.eventdate.asc()).limit(lim).all()
+
     pastevents = []
     futureevents = []
     nowevents = []
@@ -340,7 +389,10 @@ def getEvents():
     return [ nowevents, futureevents, pastevents]
 
 
-def getNews():
-    news = iaas.News.query.all()#order_by(iaas.IaasEvent.eventdate.asc()).all()
+def getNews(lim=-1):
+    if lim<0:
+        news = iaas.News.query.order_by(iaas.News.updated_on.asc()).all()
+    else:
+        news = iaas.News.query.order_by(iaas.News.updated_on.asc()).limit(lim).all()
     return news
 

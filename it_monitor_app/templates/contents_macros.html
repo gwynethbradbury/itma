@@ -308,72 +308,42 @@
     </div>
 {% endmacro %}
 {% macro newsbrief( news) %}
-    Information from SoGE IT on new services, maintenance downtimes and updates.
+    <p>Information from SoGE IT on new services, maintenance downtimes and updates.</p>
+    <ul>
+        {% for n in news %}
+            <li><a href="{{ url_for('news_item', news_id=n.id) }}">{{ n.title }}</a></li>
+        {% endfor %}
+    </ul>
 {% endmacro %}
 {% macro news( news) %}
-    Information from SoGE IT on new services, maintenance downtimes and updates.
+    <p>Information from SoGE IT on new services, maintenance downtimes and updates.</p>
+    {% for news_article in news %}
+        <div class="card" >
+            {#  <img class="card-img-top" src="..." alt="Card image cap">#}
+            <div class="card-body">
+                <a href="{{ url_for('news_item', news_id=news_article.id) }}"><h4>{{news_article.title}}</h4></a>
+                <p>{{news_article.body[:100]|safe}}...<p>
+                <p><i>Published: {{ news_article.created_on }} (Updated: {{ news_article.updated_on }}) </i></p>
+            </div>
+        </div>
+        <br/>
+    {% endfor %}
+
 {% endmacro %}
 {% macro whatsonbrief( nowevents=[], futureevents=[]) %}
-    Upcoming training events and seminars from SoGE IT.
-{#    <div class="container" >#}
-{#        <div class="row">#}
-{#            <div class="col">#}
-{##}
-{#                <h3>Today ({{ nowevents|length }})</h3>#}
-{#                {% for event in nowevents %}#}
-{#                    <div>#}
-{#                        <article class="event">#}
-{##}
-{#                        <div class="event-date">#}
-{#                            <p class="event-monthnow">{{ event.eventdate_str() }}</p>#}
-{#                            <p class="event-day">{{ event.eventday_str() }}</p>#}
-{#                        </div>#}
-{##}
-{#                        <div class="event-desc">#}
-{#                            <h4 class="event-desc-header">{{ event.title }}</h4>#}
-{#                            <p class="event-desc-detail"><span class="event-desc-time">{{ event.subtitle }}</span></p>#}
-{#                            <p>{{ eventdescription }}<br/>{{ event.room }}, {{ event.starttime }}-{{ event.endtime }}</p>#}
-{#                            <!--<a href="#" class="rsvp button">RSVP &amp; Details</a>-->#}
-{#                        </div>#}
-{#                    </article>#}
-{##}
-{#                    {% if nowevents|length>1 %}#}
-{#                        <br/>#}
-{#                        <hr>#}
-{#                    {% endif %}#}
-{#                    </div>#}
-{#                {% endfor %}#}
-    {#        </div>#}
-{##}
-{##}
-    {#        <div class="row">#}
-{#                <h3>Upcoming Events ({{ futureevents|length }})</h3>#}
-{#                {% for event in futureevents %}#}
-{#                    <div>#}
-{#                        <article class="event">#}
-{##}
-{#                        <div class="event-date">#}
-{#                            <p class="event-monthfuture">{{ event.eventdate_str() }}</p>#}
-{#                            <p class="event-day">{{ event.eventday_str() }}</p>#}
-{#                        </div>#}
-{##}
-{#                        <div class="event-desc">#}
-{#                            <h4 class="event-desc-header">{{ event.title }}</h4>#}
-{#                            <p class="event-desc-detail"><span class="event-desc-time">{{ event.subtitle }}</span></p>#}
-{#                            <p>{{ eventdescription }}<br/>{{ event.room }}, {{ event.starttime }}-{{ event.endtime }}</p>#}
-{#                            <!--<a href="#" class="rsvp button">RSVP &amp; Details</a>-->#}
-{#                        </div>#}
-{#                    </article>#}
-{##}
-{#                    {% if futureevents|length>1 %}#}
-{#                                        <br/>#}
-{#                        <hr>#}
-{#                    {% endif %}#}
-{#                    </div>#}
-{#                {% endfor %}#}
-{##}
-{##}
-{#            </div></div></div>#}
+    <p>Upcoming training events and seminars from SoGE IT.</p>
+    <ul>
+        {% for event in nowevents %}
+            <li>
+                <a href="{{ url_for('events') }}">{{ event.title }}</a>
+            </li>
+        {% endfor %}
+        {% for event in futureevents %}
+            <li>
+                <a href="{{ url_for('events') }}">{{ event.title }}</a>
+            </li>
+        {% endfor %}
+    </ul>
 {% endmacro %}
 {% macro whatson( nowevents=[], futureevents=[]) %}
     <div class="container" >
@@ -382,27 +352,27 @@
 
                 <h3>Today ({{ nowevents|length }})</h3>
                 {% for event in nowevents %}
-                    <div><article class="event">
+                    <div class="card" >
+                        {#  <img class="card-img-top" src="..." alt="Card image cap">#}
+                        <div class="card-body">
+                            <article class="event">
 
-                        <div class="event-date">
-                            <p class="event-monthnow">{{ event.eventdate_str() }}</p>
-                            <p class="event-day">{{ event.eventday_str() }}</p>
+                                    <div class="event-date">
+                                        <p class="event-monthnow">{{ event.eventdate_str() }}</p>
+                                        <p class="event-day">{{ event.eventday_str() }}</p>
+                                    </div>
+
+                                    <div class="event-desc">
+                                        <h4 class="event-desc-header">{{ event.title }}</h4>
+                                        <p class="event-desc-detail"><span class="event-desc-time">{{ event.subtitle }}</span></p>
+                                        <p>{{ eventdescription }}<br/>{{ event.room }}, {{ event.starttime }}-{{ event.endtime }}</p>
+                                        <!--<a href="#" class="rsvp button">RSVP &amp; Details</a>-->
+                                    </div>
+                            </article>
                         </div>
-
-                        <div class="event-desc">
-                            <h4 class="event-desc-header">{{ event.title }}</h4>
-                            <p class="event-desc-detail"><span class="event-desc-time">{{ event.subtitle }}</span></p>
-                            <p>{{ eventdescription }}<br/>{{ event.room }}, {{ event.starttime }}-{{ event.endtime }}</p>
-                            <!--<a href="#" class="rsvp button">RSVP &amp; Details</a>-->
-                        </div>
-                    </article>
-
-                    {% if nowevents|length>1 %}
-                                        <br/>
-
-                        <hr>
-                    {% endif %}
                     </div>
+                    <br/>
+
                 {% endfor %}
     {#        </div>#}
 
@@ -410,26 +380,28 @@
     {#        <div class="row">#}
                 <h3>Upcoming Events ({{ futureevents|length }})</h3>
                 {% for event in futureevents %}
-                    <div><article class="event">
+                    <div class="card" >
+                        {#  <img class="card-img-top" src="..." alt="Card image cap">#}
+                        <div class="card-body">
+                            <article class="event">
 
-                        <div class="event-date">
-                            <p class="event-monthfuture">{{ event.eventdate_str() }}</p>
-                            <p class="event-day">{{ event.eventday_str() }}</p>
+                                <div class="event-date">
+                                    <p class="event-monthfuture">{{ event.eventdate_str() }}</p>
+                                    <p class="event-day">{{ event.eventday_str() }}</p>
+                                </div>
+
+                                <div class="event-desc">
+                                    <h4 class="event-desc-header">{{ event.title }}</h4>
+                                    <p class="event-desc-detail"><span class="event-desc-time">{{ event.subtitle }}</span></p>
+                                    <p>{{ eventdescription }}<br/>{{ event.room }}, {{ event.starttime }}-{{ event.endtime }}</p>
+                                    <!--<a href="#" class="rsvp button">RSVP &amp; Details</a>-->
+                                </div>
+                            </article>
                         </div>
-
-                        <div class="event-desc">
-                            <h4 class="event-desc-header">{{ event.title }}</h4>
-                            <p class="event-desc-detail"><span class="event-desc-time">{{ event.subtitle }}</span></p>
-                            <p>{{ eventdescription }}<br/>{{ event.room }}, {{ event.starttime }}-{{ event.endtime }}</p>
-                            <!--<a href="#" class="rsvp button">RSVP &amp; Details</a>-->
-                        </div>
-                    </article>
-
-                    {% if futureevents|length>1 %}
-                                        <br/>
-                        <hr>
-                    {% endif %}
                     </div>
+
+                    <br/>
+
                 {% endfor %}
 
 
@@ -447,28 +419,29 @@
                 <h3>Past Events ({{ pastevents|length }})</h3>
                 <br/>
                 {% for event in pastevents %}
-                    <div>
-                    <article class="event">
+                    <div class="card" >
+                        {#  <img class="card-img-top" src="..." alt="Card image cap">#}
+                        <div class="card-body">
+                            <article class="event">
 
-                        <div class="event-date">
-                            <p class="event-monthpast">{{ event.eventdate_str() }}</p>
-                            <p class="event-day">{{ event.eventday_str() }}</p>
+                                <div class="event-date">
+                                    <p class="event-monthpast">{{ event.eventdate_str() }}</p>
+                                    <p class="event-day">{{ event.eventday_str() }}</p>
+                                </div>
+                {##}
+                                <div class="event-desc">
+                                    <h4 class="event-desc-header">{{ event.title }}</h4>
+                                    <p class="event-desc-detail"><span class="event-desc-time">{{ event.subtitle }}</span></p>
+                                    <p>{{ eventdescription }}<br/>{{ event.room }}, {{ event.starttime }}-{{ event.endtime }}</p>
+                                    <!--<a href="#" class="rsvp button">RSVP &amp; Details</a>-->
+                                </div>
+                            </article>
                         </div>
-        {##}
-                        <div class="event-desc">
-                            <h4 class="event-desc-header">{{ event.title }}</h4>
-                            <p class="event-desc-detail"><span class="event-desc-time">{{ event.subtitle }}</span></p>
-                            <p>{{ eventdescription }}<br/>{{ event.room }}, {{ event.starttime }}-{{ event.endtime }}</p>
-                            <!--<a href="#" class="rsvp button">RSVP &amp; Details</a>-->
-                        </div>
-                    </article>
-
-
-                    {% if pastevents|length>1 %}
-                        <br/>
-                        <hr>
-                    {% endif %}
                     </div>
+
+                    <br/>
+
+
                 {% endfor %}
             </div>
         </div>
