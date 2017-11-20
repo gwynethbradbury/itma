@@ -9,7 +9,7 @@ from it_monitor_app.auth.iaasldap import LDAPUser as LDAPUser
 from threading import Lock
 from flask_socketio import SocketIO, emit, join_room, leave_room, \
     close_room, rooms, disconnect
-async_mode = None
+# async_mode = None
 import math
 
 current_user = LDAPUser()
@@ -23,6 +23,9 @@ else:
     p = '/Users/cenv0594/Repositories/dbas-dev/main/iaas/iaas.py'
 import sys
 
+import eventlet
+eventlet.monkey_patch()
+
 # the mock-0.3.1 dir contains testcase.py, testutils.py & mock.py
 sys.path.append(p)
 import imp
@@ -31,7 +34,6 @@ from datetime import datetime
 iaas = imp.load_source('iaas', p)
 
 socketio = SocketIO(app, async_mode='threading')
-thread = None
 thread_lock = Lock()
 
 
@@ -288,14 +290,14 @@ def background_thread():
 @socketio.on('my_event', namespace='/systemusage')
 def test_message(message):
     session['receive_count'] = session.get('receive_count', 0) + 1
-    emit('my_response',
+    socketio.emit('my_response',
          {'data': message['data'], 'count': session['receive_count']})
 
 
 @socketio.on('my_broadcast_event', namespace='/systemusage')
 def test_broadcast_message(message):
     session['receive_count'] = session.get('receive_count', 0) + 1
-    emit('my_response',
+    socketio.emit('my_response',
          {'data': message['data'], 'count': session['receive_count']},
          broadcast=True)
 
@@ -345,7 +347,7 @@ def test_broadcast_message(message):
 
 @socketio.on('my_ping', namespace='/systemusage')
 def ping_pong():
-    emit('my_pong')
+    socketio.emit('my_pong')
 
 
 @socketio.on('connect', namespace='/systemusage')
@@ -354,7 +356,7 @@ def test_connect():
     with thread_lock:
         if thread is None:
             thread = socketio.start_background_task(target=background_thread)
-    emit('my_response', {'data': 'Connected', 'count': 0})
+    socketio.emit('my_response', {'data': 'Connected', 'count': 0})
 
 
 @socketio.on('disconnect', namespace='/systemusage')
