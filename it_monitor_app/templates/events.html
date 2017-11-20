@@ -2,16 +2,17 @@
 {% import 'contents_macros.html' as layout with context -%}
 
 {% block body %}
-
+<br/>
     <div class="container" >
 
         <div class="row">
             <div class="col">
                 <h2>SoGE IT Training Events and Seminars</h2>
+    <p>Upcoming training events and seminars from SoGE IT.</p>
+    {{ layout.whatson( nowevents, futureevents) }}
+    {{ layout.whatsonpast(pastevents) }}
             </div>
         </div>
     </div>
-    {{ layout.whatson( nowevents, futureevents) }}
-    {{ layout.whatsonpast(pastevents) }}
 
 {% endblock %}

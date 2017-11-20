@@ -30,7 +30,7 @@ from datetime import datetime
 
 iaas = imp.load_source('iaas', p)
 
-socketio = SocketIO(app)
+socketio = SocketIO(app, async_mode='threading')
 thread = None
 thread_lock = Lock()
 

@@ -346,9 +346,9 @@
     </ul>
 {% endmacro %}
 {% macro whatson( nowevents=[], futureevents=[]) %}
-    <div class="container" >
-        <div class="row">
-            <div class="col">
+{#    <div class="container" >#}
+{#        <div class="row">#}
+{#            <div class="col">#}
 
                 <h3>Today ({{ nowevents|length }})</h3>
                 {% for event in nowevents %}
@@ -405,9 +405,9 @@
                 {% endfor %}
 
 
-            </div>
-        </div>
-    </div>
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
 {% endmacro %}
 
 {% macro whatsonpast( pastevents=[]) %}
