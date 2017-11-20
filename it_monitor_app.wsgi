@@ -18,3 +18,8 @@ from werkzeug.wsgi import pop_path_info, extract_path_info, peek_path_info
 
 from it_monitor_app import app as application
 
+from it_monitor_app.views import socketio
+
+
+socketio.run(application,port=4001)
+
