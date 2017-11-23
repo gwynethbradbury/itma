@@ -2,6 +2,10 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 import dbconfig
+import pymysql
+
+import sqlalchemy as SqlAl
+
 
 it_monitor_app_app = Flask(__name__)
 it_monitor_app_app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://{}:{}@{}/{}'\
@@ -100,7 +104,7 @@ class wol_computer(db.Model):
     def wake_on_lan(self,uid):
         if uid == self.username:
             if is_debug:
-                return 2,"debug version"
+                return 3,"debug version"
 
             call(["/usr/local/bin/wol_by_name", self.computer])
 
@@ -122,7 +126,7 @@ class wol_computer(db.Model):
 
     def is_awake(self):
         if is_debug:
-            return 1
+            return 3
 
         r = check_output(["/usr/local/bin/is_up", self.computer])
         rr = r.split('\n')
@@ -131,6 +135,29 @@ class wol_computer(db.Model):
         elif rr[0] == 'down':
             return 1
         return 2
+
+    def get_guac_id(self):
+        if is_debug:
+            return str(1)
+
+        dbe = DBEngine(db='mysql+pymysql://{}:{}@{}/{}' \
+                    .format(dbconfig.db_user,
+                            dbconfig.db_password,
+                            dbconfig.db_hostname,
+                            'guag'))
+        r = dbe.E.execute("SELECT connection_id from guacamole_connection where connection_name='{}';".format(self.computer))
+        return r[0]
+
+class DBEngine:
+    E = SqlAl.null
+    metadata = SqlAl.MetaData()
+    db=""
+
+    def __init__(self,db):
+        self.metadata = SqlAl.MetaData()
+        self.db=db
+        self.E = SqlAl.create_engine(db)
+        self.metadata.bind = self.E
 
 
 class user_license(db.Model):

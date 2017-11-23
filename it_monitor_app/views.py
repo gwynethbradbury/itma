@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, url_for, abort, jsonify, flash, session
+from flask import render_template, request, redirect, url_for, abort, jsonify, flash, session, Response
 from collections import defaultdict
 from . import app, db
 from models import Status, Color, Service, software, software_user, user_license, wol_computer
@@ -9,7 +9,7 @@ from it_monitor_app.auth.iaasldap import LDAPUser as LDAPUser
 from threading import Lock
 from flask_socketio import SocketIO, emit, join_room, leave_room, \
     close_room, rooms, disconnect
-# async_mode = None
+async_mode = None
 import math
 
 current_user = LDAPUser()
@@ -23,9 +23,6 @@ else:
     p = '/Users/cenv0594/Repositories/dbas-dev/main/iaas/iaas.py'
 import sys
 
-import eventlet
-eventlet.monkey_patch()
-
 # the mock-0.3.1 dir contains testcase.py, testutils.py & mock.py
 sys.path.append(p)
 import imp
@@ -34,6 +31,7 @@ from datetime import datetime
 iaas = imp.load_source('iaas', p)
 
 socketio = SocketIO(app, async_mode='threading')
+thread = None
 thread_lock = Lock()
 
 
@@ -130,7 +128,7 @@ def wakeonlan():
         w = wol_computer.query.filter_by(id=request.args.get('computer_id')).first()
         if request.form.get('wake')=="Wake":
             r, msg = w.wake_on_lan(uid=current_user.uid_trim())
-            time.sleep(5)
+            time.sleep(15)
             if r==1:
                 flash(msg,category="error")
             elif r==3:
@@ -138,8 +136,12 @@ def wakeonlan():
             else:
                 flash(msg,category="warning")
 
-        elif request.form.get('wake') == "Remote Desktop":
-            flash("no rdp method entered", category="message")
+        elif request.form.get('wake') == "Remote Desktop (web)":
+            id = get_guac_rdp_id(w.computer)
+            return redirect(url('https://{}.ouce.ox.ac.uk/guacamole/#/client/c/{}'.format(dbconfig.hostpage,str(id))))
+
+        elif request.form.get('wake') == "Remote Desktop (RDP app)":
+            return create_download_rdp_file(w.computer)
         # else:
         #     flash("something went wrong",category="error")
 
@@ -147,6 +149,60 @@ def wakeonlan():
 
     return render_template('wakeonlan.html',wol_computers=wol_computers)
 
+
+def create_download_rdp_file(comp_address):
+    content=("full address:s:{}.ouce.ox.ac.uk\n" 
+                "username:s:ouce\{}\n" 
+                "screen mode id:i:1\n" 
+                "use multimon:i:0\n" 
+                "desktopwidth:i:1368\n" 
+                "desktopheight:i:768\n" 
+                "session bpp:i:16\n" 
+                "winposstr:s:0,3,932,283,2300,1011\n" 
+                "compression:i:1\n" 
+                "keyboardhook:i:2\n" 
+                "audiocapturemode:i:0\n" 
+                "videoplaybackmode:i:1\n" 
+                "connection type:i:7\n" 
+                "networkautodetect:i:1\n" 
+                "bandwidthautodetect:i:1\n" 
+                "displayconnectionbar:i:1\n" 
+                "enableworkspacereconnect:i:0\n" 
+                "disable wallpaper:i:0\n" 
+                "allow font smoothing:i:0\n" 
+                "allow desktop composition:i:0\n" 
+                "disable full window drag:i:1\n" 
+                "disable menu anims:i:1\n" 
+                "disable themes:i:0\n" 
+                "disable cursor setting:i:0\n" 
+                "bitmapcachepersistenable:i:1\n" 
+                "audiomode:i:0\n" 
+                "redirectprinters:i:1\n" 
+                "redirectcomports:i:0\n" 
+                "redirectsmartcards:i:1\n" 
+                "redirectclipboard:i:1\n" 
+                "redirectposdevices:i:0\n" 
+                "autoreconnection enabled:i:1\n" 
+                "authentication level:i:2\n" 
+                "prompt for credentials:i:0\n" 
+                "negotiate security layer:i:1\n" 
+                "remoteapplicationmode:i:0\n" 
+                "alternate shell:s:\n" 
+                "shell working directory:s:\n" 
+                "gatewayhostname:s:\n" 
+                "gatewayusagemethod:i:4\n" 
+                "gatewaycredentialssource:i:4\n" 
+                "gatewayprofileusagemethod:i:0\n" 
+                "promptcredentialonce:i:0\n" 
+                "gatewaybrokeringtype:i:0\n" 
+                "use redirection server name:i:0\n" 
+                "rdgiskdcproxy:i:0\n" 
+                "kdcproxyname:s:\n" 
+                "smart sizing:i:1".format(comp_address,current_user.uid_trim()))
+    return Response(content,
+                    mimetype="text/plain",
+                    headers={"Content-Disposition":
+                                 "attachment;filename={}.rdp".format(comp_address)})
 
 @app.route('/changepasswd', methods=["GET", "POST"])
 def changepasswd():
@@ -290,64 +346,64 @@ def background_thread():
 @socketio.on('my_event', namespace='/systemusage')
 def test_message(message):
     session['receive_count'] = session.get('receive_count', 0) + 1
-    socketio.emit('my_response',
+    emit('my_response',
          {'data': message['data'], 'count': session['receive_count']})
 
 
 @socketio.on('my_broadcast_event', namespace='/systemusage')
 def test_broadcast_message(message):
     session['receive_count'] = session.get('receive_count', 0) + 1
-    socketio.emit('my_response',
+    emit('my_response',
          {'data': message['data'], 'count': session['receive_count']},
          broadcast=True)
 
 
-# @socketio.on('join', namespace='/systemusage')
-# def join(message):
-#     join_room(message['room'])
-#     session['receive_count'] = session.get('receive_count', 0) + 1
-#     emit('my_response',
-#          {'data': 'In rooms: ' + ', '.join(rooms()),
-#           'count': session['receive_count']})
-#
-#
-# @socketio.on('leave', namespace='/systemusage')
-# def leave(message):
-#     leave_room(message['room'])
-#     session['receive_count'] = session.get('receive_count', 0) + 1
-#     emit('my_response',
-#          {'data': 'In rooms: ' + ', '.join(rooms()),
-#           'count': session['receive_count']})
-#
-#
-# @socketio.on('close_room', namespace='/systemusage')
-# def close(message):
-#     session['receive_count'] = session.get('receive_count', 0) + 1
-#     emit('my_response', {'data': 'Room ' + message['room'] + ' is closing.',
-#                          'count': session['receive_count']},
-#          room=message['room'])
-#     close_room(message['room'])
-#
-#
-# @socketio.on('my_room_event', namespace='/systemusage')
-# def send_room_message(message):
-#     session['receive_count'] = session.get('receive_count', 0) + 1
-#     emit('my_response',
-#          {'data': message['data'], 'count': session['receive_count']},
-#          room=message['room'])
-#
-#
-# @socketio.on('disconnect_request', namespace='/systemusage')
-# def disconnect_request():
-#     session['receive_count'] = session.get('receive_count', 0) + 1
-#     emit('my_response',
-#          {'data': 'Disconnected!', 'count': session['receive_count']})
-#     disconnect()
+@socketio.on('join', namespace='/systemusage')
+def join(message):
+    join_room(message['room'])
+    session['receive_count'] = session.get('receive_count', 0) + 1
+    emit('my_response',
+         {'data': 'In rooms: ' + ', '.join(rooms()),
+          'count': session['receive_count']})
+
+
+@socketio.on('leave', namespace='/systemusage')
+def leave(message):
+    leave_room(message['room'])
+    session['receive_count'] = session.get('receive_count', 0) + 1
+    emit('my_response',
+         {'data': 'In rooms: ' + ', '.join(rooms()),
+          'count': session['receive_count']})
+
+
+@socketio.on('close_room', namespace='/systemusage')
+def close(message):
+    session['receive_count'] = session.get('receive_count', 0) + 1
+    emit('my_response', {'data': 'Room ' + message['room'] + ' is closing.',
+                         'count': session['receive_count']},
+         room=message['room'])
+    close_room(message['room'])
+
+
+@socketio.on('my_room_event', namespace='/systemusage')
+def send_room_message(message):
+    session['receive_count'] = session.get('receive_count', 0) + 1
+    emit('my_response',
+         {'data': message['data'], 'count': session['receive_count']},
+         room=message['room'])
+
+
+@socketio.on('disconnect_request', namespace='/systemusage')
+def disconnect_request():
+    session['receive_count'] = session.get('receive_count', 0) + 1
+    emit('my_response',
+         {'data': 'Disconnected!', 'count': session['receive_count']})
+    disconnect()
 
 
 @socketio.on('my_ping', namespace='/systemusage')
 def ping_pong():
-    socketio.emit('my_pong')
+    emit('my_pong')
 
 
 @socketio.on('connect', namespace='/systemusage')
@@ -356,7 +412,7 @@ def test_connect():
     with thread_lock:
         if thread is None:
             thread = socketio.start_background_task(target=background_thread)
-    socketio.emit('my_response', {'data': 'Connected', 'count': 0})
+    emit('my_response', {'data': 'Connected', 'count': 0})
 
 
 @socketio.on('disconnect', namespace='/systemusage')
