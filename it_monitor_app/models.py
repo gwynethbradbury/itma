@@ -146,6 +146,7 @@ class wol_computer(db.Model):
                             dbconfig.db_hostname,
                             'guac'))
         r = dbe.E.execute("SELECT connection_id from guacamole_connection where connection_name='{}';".format(self.computer))
+        r=r.fetchone()
         return str(r[0])
 
 class DBEngine:
