@@ -21,5 +21,5 @@ from it_monitor_app import app as application
 from it_monitor_app.views import socketio
 
 
-socketio.run(application,port=4001)
+#socketio.run(application,port=4001)
 
