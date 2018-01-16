@@ -319,7 +319,6 @@
     <p>Information from SoGE IT on new services, maintenance downtimes and updates.</p>
     {% for news_article in news %}
         <div class="card" >
-            {#  <img class="card-img-top" src="..." alt="Card image cap">#}
             <div class="card-body">
                 <a href="{{ url_for('news_item', news_id=news_article.id) }}"><h4>{{news_article.title}}</h4></a>
                 <p>{{news_article.body[:100]|safe}}...<p>
@@ -411,10 +410,10 @@
 {% endmacro %}
 
 {% macro whatsonpast( pastevents=[]) %}
-    <div class="container" style="background-color: #ffffff" >
+{#    <div class="container" style="background-color: #ffffff" >#}
 
-        <div class="row">
-            <div class="col">
+{#        <div class="row">#}
+{#            <div class="col">#}
 
                 <h3>Past Events ({{ pastevents|length }})</h3>
                 <br/>
@@ -443,7 +442,7 @@
 
 
                 {% endfor %}
-            </div>
-        </div>
-    </div>
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
 {% endmacro %}
