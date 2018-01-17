@@ -11,7 +11,7 @@ dev:
   script:
     - rsync --exclude=.gitlab-ci.yml --exclude=.git -avx -e ssh `pwd`/ dbasdev@iaas.ouce.ox.ac.uk:/var/www/html/it_dev/
   only:
-    - master
+    - dev
     
 #production:
 #  script:
