@@ -7,11 +7,11 @@ before_script:
   - mkdir -p ~/.ssh
   - '[[ -f /.dockerenv ]] && echo "$SSH_HOSTKEYS" > ~/.ssh/known_hosts'
 
-dev:
-  script:
-    - rsync --exclude=.gitlab-ci.yml --exclude=.git -avx -e ssh `pwd`/ dbasdev@iaas.ouce.ox.ac.uk:/var/www/html/it_dev/
-  only:
-    - dev
+#dev:
+#  script:
+#    - rsync --exclude=.gitlab-ci.yml --exclude=.git -avx -e ssh `pwd`/ dbasdev@iaas.ouce.ox.ac.uk:/var/www/html/it_dev/
+#  only:
+#    - dev
     
 production:
   script:
