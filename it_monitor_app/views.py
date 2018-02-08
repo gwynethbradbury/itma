@@ -11,6 +11,7 @@ from flask_socketio import SocketIO, emit, join_room, leave_room, \
     close_room, rooms, disconnect
 async_mode = None
 import math
+from jinja2 import TemplateNotFound
 
 current_user = LDAPUser()
 
@@ -50,6 +51,15 @@ def index():
     return render_template('home.html', services=services, nowevents=nowevents, futureevents=futureevents,
                            news=news,
                            async_mode=socketio.async_mode)
+
+
+@app.route('/<page>')
+def show(page):
+    try:
+        return render_template("%s.html" % page)
+    except TemplateNotFound:
+        abort(404)
+
 
 @app.route('/events')
 def events():
