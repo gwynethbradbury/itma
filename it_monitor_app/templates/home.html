@@ -65,7 +65,9 @@
 {#                <div class="row">#}
 
                     <div class="card w-100" >
-{#                        <img class="card-img-top" src="{{ url_for('static', filename='img/calendar.png') }}" alt="OUCE GitLab"/>#}
+                        <a  href="https://db.ouce.ox.ac.uk">
+                            <img class="card-img-top" src="{{ url_for('static', filename='img/calendar.png') }}" style="max-width: 140px; padding: 20px;px"  alt="Database Service"/>
+                        </a>
                         <div class="card-body">
                             <h4 class="card-title">IT Events</h4>
                             <p class="card-text">{{ layout.whatsonbrief(nowevents, futureevents) }}</p>
@@ -78,7 +80,7 @@
 
                     <div class="card w-100" >
                         <a  href="https://gitlab.ouce.ox.ac.uk">
-                            <img class="card-img-top" src="{{ url_for('static', filename='img/gitlab.png') }}" style="max-width: 100px" alt="OUCE GitLab"/>
+                            <img class="card-img-top" src="{{ url_for('static', filename='img/gitlab.png') }}" style="max-width: 140px; padding: 20px;" alt="OUCE GitLab"/>
                         </a>
                         <div class="card-body">
                             <h4 class="card-title">OUCE GitLab</h4>
@@ -93,7 +95,7 @@
 
                     <div class="card w-100" >
                         <a  href="https://db.ouce.ox.ac.uk">
-                            <img class="card-img-top" src="{{ url_for('static', filename='img/fruit_bowl_icon_color.png') }}" style="max-width: 100px"  alt="Database Service"/>
+                            <img class="card-img-top" src="{{ url_for('static', filename='img/fruit_bowl_icon_color.png') }}" style="max-width: 140px; padding: 20px;px"  alt="Database Service"/>
                         </a>
                         <div class="card-body">
                             <h4 class="card-title">Data Storage</h4>

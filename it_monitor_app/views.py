@@ -40,7 +40,11 @@ thread_lock = Lock()
 # region 'my code'
 @app.context_processor
 def inject_paths():
-    return dict(LDAPUser=LDAPUser(),debug=dbconfig.debug)
+    if dbconfig.is_server_version:
+        olp = '/online_learning/'
+    else:
+        olp = 'http://0.0.0.0:5000/'
+    return dict(LDAPUser=LDAPUser(),debug=dbconfig.debug, online_learn_path=olp)
 
 
 @app.route('/')
