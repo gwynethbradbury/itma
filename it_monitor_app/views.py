@@ -223,15 +223,22 @@ def changepasswd():
     if request.method=="POST":
         import auth.iaasldap as auth
         if current_user.uid_trim()=='soge':
-            auth.change_password(user=request.form.get('username'),
+            success, msg = auth.change_password(user=request.form.get('username'),
                                    current_pass=request.form.get('current_pass'),
                                    new_pass=request.form.get('new_pass'),
-                                   repeat_password=request.form.get('rep_pass'),full=True)
+                                   repeat_password=request.form.get('rep_pass'),
+                                 full=True)
         else:
-            auth.change_password(user=current_user.uid_trim(),
+            success, msg = auth.change_password(user=current_user.uid_trim(),
                                    current_pass=request.form.get('current_pass'),
                                    new_pass=request.form.get('new_pass'),
-                                   repeat_password=request.form.get('rep_pass'),full=False)
+                                   repeat_password=request.form.get('rep_pass'),
+                                 full=False)
+
+        if success==1:
+            flash(msg,'message')
+        else:
+            flash(msg,'error')
 
     #     from auth.forms import ChangePWForm
     #     form = ChangePWForm()
