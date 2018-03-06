@@ -13,6 +13,13 @@ async_mode = None
 import math
 from jinja2 import TemplateNotFound
 
+
+from markdown import markdown
+from markdown.extensions.codehilite import CodeHiliteExtension
+from markdown.extensions.extra import ExtraExtension
+
+
+
 current_user = LDAPUser()
 
 import imp

@@ -321,7 +321,7 @@
         <div class="card" >
             <div class="card-body">
                 <a href="{{ url_for('news_item', news_id=news_article.id) }}"><h4>{{news_article.title}}</h4></a>
-                <p>{{news_article.body[:100]|safe}}...<p>
+                <p>{{news_article.html_content[:100]}}...<p>
                 <p><i>Published: {{ news_article.created_on }} (Updated: {{ news_article.updated_on }}) </i></p>
             </div>
         </div>
@@ -329,6 +329,7 @@
     {% endfor %}
 
 {% endmacro %}
+
 {% macro whatsonbrief( nowevents=[], futureevents=[]) %}
     <p>Upcoming training events and seminars from SoGE IT.</p>
     <ul>
