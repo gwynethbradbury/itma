@@ -322,7 +322,7 @@
             {#  <img class="card-img-top" src="..." alt="Card image cap">#}
             <div class="card-body">
                 <a href="{{ url_for('news_item', news_id=news_article.id) }}"><h4>{{news_article.title}}</h4></a>
-                <p>{{news_article.html_content.split('<p>')[0]}}...<p>
+                <p>{{news_article.html_content.split('<p>')[:1]}}...<p>
                 <p><i>Published: {{ news_article.created_on }} (Updated: {{ news_article.updated_on }}) </i></p>
             </div>
         </div>
