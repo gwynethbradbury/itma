@@ -228,24 +228,30 @@ def create_download_rdp_file(comp_address):
 @app.route('/changepasswd', methods=["GET", "POST"])
 def changepasswd():
     if request.method=="POST":
-        import auth.iaasldap as auth
-        if current_user.uid_trim()=='soge':
-            success, msg = auth.change_password(user=request.form.get('username'),
-                                   current_pass=request.form.get('current_pass'),
-                                   new_pass=request.form.get('new_pass'),
-                                   repeat_password=request.form.get('rep_pass'),
-                                 full=True)
-        else:
-            success, msg = auth.change_password(user=current_user.uid_trim(),
-                                   current_pass=request.form.get('current_pass'),
-                                   new_pass=request.form.get('new_pass'),
-                                   repeat_password=request.form.get('rep_pass'),
-                                 full=False)
+        # import auth.iaasldap as auth
+        # if current_user.uid_trim()=='soge':
+        #     success, msg = auth.change_password(user=request.form.get('username'),
+        #                            current_pass=request.form.get('current_pass'),
+        #                            new_pass=request.form.get('new_pass'),
+        #                            repeat_password=request.form.get('rep_pass'),
+        #                          full=True)
+        # else:
+        #     success, msg = auth.change_password(user=current_user.uid_trim(),
+        #                            current_pass=request.form.get('current_pass'),
+        #                            new_pass=request.form.get('new_pass'),
+        #                            repeat_password=request.form.get('rep_pass'),
+        #                          full=False)
+        #
+        # if success==1:
+        #     flash(msg,'message')
+        # else:
+        #     flash(msg,'error')
 
-        if success==1:
-            flash(msg,'message')
-        else:
-            flash(msg,'error')
+        import auth.iaasldap as auth
+        auth.change_password(user=request.form.get('username'),
+                             current_pass=request.form.get('current_pass'),
+                             new_pass=request.form.get('new_pass'),
+                             repeat_password=request.form.get('rep_pass'))
 
     #     from auth.forms import ChangePWForm
     #     form = ChangePWForm()
