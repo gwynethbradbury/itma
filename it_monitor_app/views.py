@@ -227,29 +227,47 @@ def create_download_rdp_file(comp_address):
 
 @app.route('/changepasswd', methods=["GET", "POST"])
 def changepasswd():
+    from auth.forms import ChangePWForm
+    form = ChangePWForm()
     if request.method=="POST":
+        form = ChangePWForm(request.form)
         import auth.iaasldap as auth
-        if current_user.uid_trim()=='soge':
-            success, msg = auth.change_password(user=request.form.get('username'),
-                                   current_pass=request.form.get('current_pass'),
-                                   new_pass=request.form.get('new_pass'),
-                                   repeat_password=request.form.get('rep_pass'),
-                                 full=True)
-        else:
-            success, msg = auth.change_password(user=current_user.uid_trim(),
-                                   current_pass=request.form.get('current_pass'),
-                                   new_pass=request.form.get('new_pass'),
-                                   repeat_password=request.form.get('rep_pass'),
-                                 full=False)
+        # if current_user.uid_trim()=='soge':
+        #     success, msg = auth.change_password(user=request.form.get('username'),
+        #                            current_pass=request.form.get('current_pass'),
+        #                            new_pass=request.form.get('new_pass'),
+        #                            repeat_password=request.form.get('rep_pass'),
+        #                          full=True)
+        # else:
+        #     success, msg = auth.change_password(user=current_user.uid_trim(),
+        #                            current_pass=request.form.get('current_pass'),
+        #                            new_pass=request.form.get('new_pass'),
+        #                            repeat_password=request.form.get('rep_pass'),
+        #                          full=False)
+        #
+        # if success==1:
+        #     flash(msg,'message')
+        # else:
+        #     flash(msg,'error')
 
-        if success==1:
-            flash(msg,'message')
-        else:
-            flash(msg,'error')
+        if form.validate_on_submit():
+            if current_user.uid_trim() == 'soge':
+                success, msg = auth.change_password(user=request.form.get('username'),
+                                                    current_pass=request.form.get('current_pass'),
+                                                    new_pass=request.form.get('new_pass'),
+                                                    repeat_password=request.form.get('rep_pass'),
+                                                    full=True)
+            else:
+                success, msg = auth.change_password(user=current_user.uid_trim(),
+                                                    current_pass=request.form.get('current_pass'),
+                                                    new_pass=request.form.get('new_pass'),
+                                                    repeat_password=request.form.get('rep_pass'),
+                                                    full=False)
 
-    #     from auth.forms import ChangePWForm
-    #     form = ChangePWForm()
-    #     if form.validate_on_submit():
+            if success == 1:
+                flash(msg, 'message')
+            else:
+                flash(msg, 'error')
     #         user = current_user
     #         # user = User(username=form.username.data,
     #         #             email=form.username.data,
@@ -268,7 +286,8 @@ def changepasswd():
     #         abort(404)
     #
 
-    return render_template('changepasswd.html')
+        return render_template('changepasswd.html', form=form)
+    return render_template('changepasswd.html', form=form)
 
 
 @app.route('/software', methods=['POST', 'GET'])
