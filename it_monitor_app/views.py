@@ -285,7 +285,8 @@ def changepasswd():
     #     except TemplateNotFound:
     #         abort(404)
     #
-
+        else:
+            flash("Failed to Change Password", 'error')
         return render_template('changepasswd.html', form=form)
     return render_template('changepasswd.html', form=form)
 
