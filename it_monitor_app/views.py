@@ -254,14 +254,14 @@ def changepasswd():
             if current_user.uid_trim() == 'soge':
                 success, msg = auth.change_password(user=request.form.get('username'),
                                                     current_pass=request.form.get('current_pass'),
-                                                    new_pass=request.form.get('new_pass'),
-                                                    repeat_password=request.form.get('rep_pass'),
+                                                    new_pass=request.form.get('password'),
+                                                    repeat_password=request.form.get('password2'),
                                                     full=True)
             else:
                 success, msg = auth.change_password(user=current_user.uid_trim(),
                                                     current_pass=request.form.get('current_pass'),
-                                                    new_pass=request.form.get('new_pass'),
-                                                    repeat_password=request.form.get('rep_pass'),
+                                                    new_pass=request.form.get('password'),
+                                                    repeat_password=request.form.get('passord2'),
                                                     full=False)
 
             if success == 1:
