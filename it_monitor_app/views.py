@@ -261,7 +261,7 @@ def changepasswd():
                 success, msg = auth.change_password(user=current_user.uid_trim(),
                                                     current_pass=request.form.get('current_pass'),
                                                     new_pass=request.form.get('password'),
-                                                    repeat_password=request.form.get('passord2'),
+                                                    repeat_password=request.form.get('password2'),
                                                     full=False)
 
             if success == 1:
