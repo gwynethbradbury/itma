@@ -85,10 +85,16 @@ class wol_computer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(8))
     computer = db.Column(db.String(20))
+    hfs_installed = db.Column(db.Boolean, default=False)
+    backuptime = db.Column(db.Time, nullable=True)
+    last_backup = db.Column(db.DateTime, nullable=True)
 
     def __init__(self,username="unknown",computer="unknown"):
         self.username=username
         self.computer=computer
+        self.hfs_installed=False
+        self.backuptime=None
+        self.last_backup=None
 
     def get_status(self):
         return self.is_awake()
@@ -99,7 +105,6 @@ class wol_computer(db.Model):
         if self.get_status() == 1:
             return 'btn-danger'
         return 'btn-warning'
-
 
     def wake_on_lan(self,uid):
         if uid == self.username:
@@ -119,7 +124,6 @@ class wol_computer(db.Model):
 
 
         return self.is_awake()
-
 
     def do_remotedesktop(self):
         pass
@@ -242,8 +246,22 @@ class software_user(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(8),unique=True)
 
-    def __init__(self,username="unknown"):
-        self.username = username
+    software_key = db.Column(db.Integer, db.ForeignKey('software_key.id'), nullable=True)
 
+    def __init__(self,username="unknown",software_key='NULL'):
+        self.username = username
+        self.software_key=software_key
+
+class software_key(db.Model):
+    __bind_key__ = 'it_monitor_app'
+    id = db.Column(db.Integer, primary_key=True)
+    serial = db.Column(db.VARCHAR(80))
+    common = db.Column(db.Boolean)
+    software_id = db.Column(db.Integer, db.ForeignKey('software.id'), nullable=False)
+
+    def __init__(self, software_id,serial="unknown", common=False):
+        self.serial = serial
+        self.common=common
+        self.software_id=software_id
 
 

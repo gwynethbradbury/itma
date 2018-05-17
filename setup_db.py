@@ -3,7 +3,7 @@ from it_monitor_app.database.seed import run_seed
 
 if __name__ == '__main__':
     it_monitor_app.db.create_all()
-    run_seed()
+    # run_seed()
 
 # SQL:
 # create database taskmanagement;
