@@ -1,4 +1,5 @@
-from it_monitor_app import app, db
+from it_monitor_app import app
+from it_monitor_app.models import db
 
 from flask.ext.script import Manager
 from flask.ext.migrate import Migrate, MigrateCommand
