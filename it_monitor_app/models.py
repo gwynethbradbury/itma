@@ -257,7 +257,7 @@ class software_user(db.Model):
 
     software_key = db.Column(db.Integer, db.ForeignKey('software_key.id'), nullable=True)
 
-    def __init__(self,username="unknown",software_key='NULL'):
+    def __init__(self,username="unknown",software_key=None):
         self.username = username
         self.software_key=software_key
 

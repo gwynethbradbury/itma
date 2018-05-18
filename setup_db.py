@@ -4,8 +4,9 @@ from it_monitor_app.models import db
 from it_monitor_app.models import Service, software, software_user, software_key, user_license, wol_computer
 
 if __name__ == '__main__':
+    db.drop_all()
     db.create_all()
-    # run_seed()
+    run_seed()
 
 # SQL:
 # create database taskmanagement;
