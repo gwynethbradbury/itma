@@ -1,9 +1,11 @@
 import it_monitor_app
 from it_monitor_app.database.seed import run_seed
+from it_monitor_app.models import db
+from it_monitor_app.models import Service, software, software_user, software_key, user_license, wol_computer
 
 if __name__ == '__main__':
-    it_monitor_app.db.create_all()
-    # run_seed()
+    db.create_all()
+    run_seed()
 
 # SQL:
 # create database taskmanagement;
