@@ -57,6 +57,7 @@ class Color(Enum):
 
 class Service(db.Model):
     __bind_key__ = 'it_monitor_app'
+    __tablename__ = 'service'
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(70))
@@ -82,6 +83,8 @@ class Service(db.Model):
 
 class wol_computer(db.Model):
     __bind_key__ = 'it_monitor_app'
+    __tablename__ = 'wol_computer'
+
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(8))
     computer = db.Column(db.String(20))
@@ -167,6 +170,8 @@ class DBEngine:
 
 class user_license(db.Model):
     __bind_key__ = 'it_monitor_app'
+    __tablename__ = 'user_license'
+
     id = db.Column(db.Integer, primary_key=True)
     software_user_id = db.Column(db.Integer, db.ForeignKey('software_user.id'))
     software_id = db.Column(db.Integer, db.ForeignKey('software.id'))
@@ -178,6 +183,8 @@ class user_license(db.Model):
 
 class software(db.Model):
     __bind_key__ = 'it_monitor_app'
+    __tablename__ = 'software'
+
     id = db.Column(db.Integer, primary_key=True)
     software_name = db.Column(db.String(70))
     link=db.Column(db.String(100))
@@ -243,6 +250,8 @@ class software(db.Model):
 
 class software_user(db.Model):
     __bind_key__ = 'it_monitor_app'
+    __tablename__ = 'software_user'
+
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(8),unique=True)
 
@@ -254,6 +263,8 @@ class software_user(db.Model):
 
 class software_key(db.Model):
     __bind_key__ = 'it_monitor_app'
+    __tablename__ = 'software_key'
+
     id = db.Column(db.Integer, primary_key=True)
     serial = db.Column(db.VARCHAR(80))
     common = db.Column(db.Boolean)
