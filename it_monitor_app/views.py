@@ -30,10 +30,16 @@ from datetime import datetime
 
 iaas = imp.load_source('iaas', p)
 
-socketio = SocketIO(app, async_mode='threading')
+socketio = SocketIO(app, async_mode='eventlet')
 thread = None
 thread_lock = Lock()
 
+# create array with current loads
+cluster_load=range(10)
+for  i in range(10):
+   cluster_load[i] = range(60)
+   for j in range(60):
+      cluster_load[i][j] = 0
 
 
 # region 'my code'
@@ -329,7 +335,8 @@ def background_thread():
             d=[int(time.mktime((t-timedelta(minutes=j)).timetuple())) * 1000]
 
             for n in range(10):
-                d.append(math.sin(n*6+3*2*3.14159*(t-timedelta(minutes=j)).minute*6/360)+2)
+                #d.append(math.sin(n*6+3*2*3.14159*(t-timedelta(minutes=j)).minute*6/360)+2)
+                d.append(cluster_load[n][j])
             graph_data.append(d)
         socketio.emit('my_response',
                       {'data': 'Server generated event '+str(datetime.utcnow()),
@@ -341,6 +348,14 @@ def background_thread():
 # @app.route('/')
 # def index():
 #     return render_template('index.html', async_mode=socketio.async_mode)
+
+@socketio.on('message')
+def handle_message(host,msg):
+    node_number=int(host.replace('linux',''))
+#    for i in range(59):
+#       cluster_load[node_number-1][60-i]=cluster_load[node_number-1][60-i-1]
+    cluster_load[node_number-1].insert(0,int(round(float(msg))))
+
 
 
 @socketio.on('my_event', namespace='/systemusage')
