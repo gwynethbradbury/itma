@@ -8,3 +8,4 @@ main/sqla/reload.py
 .idea
 main/sqla/reload.py
 #static
+migrations
