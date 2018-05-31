@@ -21,35 +21,35 @@
     <div class="container" >
 
         <div class="row">
-            <div class="col {% if not LDAPUser.uid_trim()=="soge" %}col-sm-12 col-lg-9 col-md-12{% endif %}">
-                <div id="carouselExampleControls" class="carousel slide w-100" data-ride="carousel">
-                    <div class="carousel-inner" style="min-height: 1000px">
-                        <div class="carousel-item active">
-                            <a href="{{ url_for('usage') }}">more...</a>
-                            {{ layout.usage() }}
-                        </div>
-                        <div class="carousel-item">
-                            <a href="{{ url_for('service_status') }}"></a>
-                            {{ layout.servicestatus(services) }}
-                        </div>
-                        <div class="carousel-item">
-                            <a href="{{ url_for('events') }}"></a>
-                            {{ layout.whatson(nowevents, futureevents) }}
-                        </div>
-                    </div>
-                    {% if not LDAPUser.uid_trim()=="soge" %}
-                        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Previous</span>
-                        </a>
-                        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Next</span>
-                        </a>
-                    {% endif %}
-                </div>
-
-            </div>
+{#            <div class="col {% if not LDAPUser.uid_trim()=="soge" %}col-sm-12 col-lg-9 col-md-12{% endif %}">#}
+{#                <div id="carouselExampleControls" class="carousel slide w-100" data-ride="carousel">#}
+{#                    <div class="carousel-inner" style="min-height: 1000px">#}
+{#                        <div class="carousel-item active">#}
+{#                            <a href="{{ url_for('usage') }}">more...</a>#}
+{#                            {{ layout.usage() }}#}
+{#                        </div>#}
+{#                        <div class="carousel-item">#}
+{#                            <a href="{{ url_for('service_status') }}"></a>#}
+{#                            {{ layout.servicestatus(services) }}#}
+{#                        </div>#}
+{#                        <div class="carousel-item">#}
+{#                            <a href="{{ url_for('events') }}"></a>#}
+{#                            {{ layout.whatson(nowevents, futureevents) }}#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    {% if not LDAPUser.uid_trim()=="soge" %}#}
+{#                        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">#}
+{#                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>#}
+{#                            <span class="sr-only">Previous</span>#}
+{#                        </a>#}
+{#                        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">#}
+{#                            <span class="carousel-control-next-icon" aria-hidden="true"></span>#}
+{#                            <span class="sr-only">Next</span>#}
+{#                        </a>#}
+{#                    {% endif %}#}
+{#                </div>#}
+{##}
+{#            </div>#}
 
             {% if not LDAPUser.uid_trim()=="soge" %}
             <div class="col col-sm-12 col-lg-12 col-md-12">
@@ -105,7 +105,7 @@
                     </div>
 
                 </div>
-            </div>
+{#            </div>#}
             {% endif %}
         </div>
 
