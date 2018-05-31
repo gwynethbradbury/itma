@@ -11,6 +11,14 @@ from flask_socketio import SocketIO, emit, join_room, leave_room, \
     close_room, rooms, disconnect
 async_mode = None
 import math
+from jinja2 import TemplateNotFound
+
+
+from markdown import markdown
+from markdown.extensions.codehilite import CodeHiliteExtension
+from markdown.extensions.extra import ExtraExtension
+
+
 
 current_user = LDAPUser()
 
@@ -45,7 +53,11 @@ for  i in range(10):
 # region 'my code'
 @app.context_processor
 def inject_paths():
-    return dict(LDAPUser=LDAPUser(),debug=dbconfig.debug)
+    if dbconfig.is_server_version:
+        olp = '/online_learning/'
+    else:
+        olp = 'http://0.0.0.0:5000/'
+    return dict(LDAPUser=LDAPUser(),debug=dbconfig.debug, online_learn_path=olp)
 
 
 @app.route('/')
@@ -56,6 +68,15 @@ def index():
     return render_template('home.html', services=services, nowevents=nowevents, futureevents=futureevents,
                            news=news,
                            async_mode=socketio.async_mode)
+
+
+@app.route('/<page>')
+def show(page):
+    try:
+        return render_template("%s.html" % page)
+    except TemplateNotFound:
+        abort(404)
+
 
 @app.route('/events')
 def events():
@@ -212,14 +233,47 @@ def create_download_rdp_file(comp_address):
 
 @app.route('/changepasswd', methods=["GET", "POST"])
 def changepasswd():
-    import auth.iaasldap as auth
-    auth.change_password(user=request.form.get('username'),
-                           current_pass=request.form.get('current_pass'),
-                           new_pass=request.form.get('new_pass'),
-                           repeat_password=request.form.get('rep_pass'))
-    #     from auth.forms import ChangePWForm
-    #     form = ChangePWForm()
-    #     if form.validate_on_submit():
+    from auth.forms import ChangePWForm
+    form = ChangePWForm()
+    if request.method=="POST":
+        form = ChangePWForm(request.form)
+        import auth.iaasldap as auth
+        # if current_user.uid_trim()=='soge':
+        #     success, msg = auth.change_password(user=request.form.get('username'),
+        #                            current_pass=request.form.get('current_pass'),
+        #                            new_pass=request.form.get('new_pass'),
+        #                            repeat_password=request.form.get('rep_pass'),
+        #                          full=True)
+        # else:
+        #     success, msg = auth.change_password(user=current_user.uid_trim(),
+        #                            current_pass=request.form.get('current_pass'),
+        #                            new_pass=request.form.get('new_pass'),
+        #                            repeat_password=request.form.get('rep_pass'),
+        #                          full=False)
+        #
+        # if success==1:
+        #     flash(msg,'message')
+        # else:
+        #     flash(msg,'error')
+
+        if form.validate_on_submit():
+            if current_user.uid_trim() == 'soge':
+                success, msg = auth.change_password(user=request.form.get('username'),
+                                                    current_pass=request.form.get('current_pass'),
+                                                    new_pass=request.form.get('password'),
+                                                    repeat_password=request.form.get('password2'),
+                                                    full=True)
+            else:
+                success, msg = auth.change_password(user=current_user.uid_trim(),
+                                                    current_pass=request.form.get('current_pass'),
+                                                    new_pass=request.form.get('password'),
+                                                    repeat_password=request.form.get('password2'),
+                                                    full=False)
+
+            if success == 1:
+                flash(msg, 'message')
+            else:
+                flash(msg, 'error')
     #         user = current_user
     #         # user = User(username=form.username.data,
     #         #             email=form.username.data,
@@ -237,8 +291,10 @@ def changepasswd():
     #     except TemplateNotFound:
     #         abort(404)
     #
-
-    return render_template('changepasswd.html')
+        else:
+            flash("Failed to Change Password", 'error')
+        return render_template('changepasswd.html', form=form)
+    return render_template('changepasswd.html', form=form)
 
 
 @app.route('/software', methods=['POST', 'GET'])
