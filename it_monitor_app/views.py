@@ -143,8 +143,8 @@ def wakeonlan():
                 flash(msg,category="warning")
 
         elif request.form.get('wake') == "Remote Desktop (web)":
-            id = get_guac_rdp_id(w.computer)
-            return redirect(url('https://{}.ouce.ox.ac.uk/guacamole/#/client/c/{}'.format(dbconfig.hostpage,str(id))))
+            id = w.get_guac_id()#get_guac_rdp_id(w.computer)
+            return redirect('https://{}.ouce.ox.ac.uk/guacamole/#/client/c/{}'.format(dbconfig.hostpage,str(id)))
 
         elif request.form.get('wake') == "Remote Desktop (RDP app)":
             return create_download_rdp_file(w.computer)
