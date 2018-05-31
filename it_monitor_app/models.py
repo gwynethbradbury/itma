@@ -246,4 +246,3 @@ class software_user(db.Model):
         self.username = username
 
 
-
