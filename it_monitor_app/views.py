@@ -68,6 +68,14 @@ def index():
     return render_template('home.html', services=services, nowevents=nowevents, futureevents=futureevents,
                            news=news,
                            async_mode=socketio.async_mode)
+@app.route('/test')
+def index():
+    services = Service.query.order_by(Service.id.asc()).all()
+    nowevents, futureevents, pastevents = getEvents(5)
+    news = getNews(5)
+    return render_template('home_test.html', services=services, nowevents=nowevents, futureevents=futureevents,
+                           news=news,
+                           async_mode=socketio.async_mode)
 
 
 @app.route('/<page>')
