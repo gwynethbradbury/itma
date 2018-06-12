@@ -16,7 +16,7 @@
                         <form action="{{ url_for("wakeonlan", computer_id=w.id) }}" method="POST">
                             {% if w.get_status() == 3 %}
                                 <button class="btn disabled {{ w.status_style() }}">Awake</button>
-                                <a href="https:/it-dev.ouce.ox.ac.uk/guacamole/#/client/c/{{ w.get_guac_id() }}" class="btn {{ w.status_style() }}">Remote Desktop (RDP web)</a>
+                                <a href="https://it-dev.ouce.ox.ac.uk/guacamole/#/client/c/{{ w.get_guac_id() }}" class="btn {{ w.status_style() }}">Remote Desktop (RDP web)</a>
                                 <input type="submit" class="btn {{ w.status_style() }}" name="wake" value="Remote Desktop (RDP app)"/>
                             {% elif w.get_status() == 2 %}
                                 <p>Problems connecting to {{ w.computer }}, please contact SoGE IT.</p>
