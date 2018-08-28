@@ -270,13 +270,13 @@ def changepasswd():
                                                     current_pass=request.form.get('current_pass'),
                                                     new_pass=request.form.get('password'),
                                                     repeat_password=request.form.get('password2'),
-                                                    full=True)
+                                                    full=True,current_user=current_user)
             else:
                 success, msg = auth.change_password(user=current_user.uid_trim(),
                                                     current_pass=request.form.get('current_pass'),
                                                     new_pass=request.form.get('password'),
                                                     repeat_password=request.form.get('password2'),
-                                                    full=False)
+                                                    full=False,current_user=current_user)
 
             if success == 1:
                 flash(msg, 'message')
