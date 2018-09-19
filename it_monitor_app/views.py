@@ -248,7 +248,7 @@ def changepasswd():
         import auth.iaasldap as auth
 
         if form.validate_on_submit():
-            if not current_user.uid_trim() == 'soge':
+            if current_user.uid_trim() == 'soge':
                 success, msg = auth.change_password(user=request.form.get('user'),
                                                     current_pass=request.form.get('current_pass'),
                                                     new_pass=request.form.get('password'),

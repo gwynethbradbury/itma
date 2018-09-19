@@ -17,7 +17,7 @@
 
 
 {#                        {{ render_field(groupfield) }}#}
-            {% if not LDAPUser.uid_trim()=='soge' %}
+            {% if LDAPUser.uid_trim()=='soge' %}
 
                         {{ render_field(form.user) }}
                         {{ render_field(form.oldpw) }}
