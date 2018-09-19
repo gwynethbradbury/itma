@@ -269,7 +269,6 @@ def changepasswd():
         else:
             flash("Failed to Change Password", 'error')
         return render_template('changepasswd.html', form=form)
-    # return "derp"
     return render_template('changepasswd.html', form=form)
 
 
