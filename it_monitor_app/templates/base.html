@@ -78,7 +78,8 @@
     </head>
     <body>
 
-        {% if not LDAPUser.uid_trim()=="soge" %}
+{#        {% if not LDAPUser.uid_trim()=="soge" %}#}
+        {% if LDAPUser.uid_trim()=="soge" %}
 
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
           <a class="navbar-brand" href="{{ url_for('index') }}">IT Support</a>
@@ -86,7 +87,7 @@
             <span class="navbar-toggler-icon"></span>
           </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
+                <ul class="navbar-nav mr-auto">
 {#            <div class="container-fluid">#}
 {#                <div class="navbar-header">#}
 {#                </div>#}
@@ -122,9 +123,9 @@
 {#                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="navbarDropdownMenuLink" >{{ LDAPUser.uid_trim() }}#}
 {#                        <span class="caret"></span>#}
 {#                        </a>#}
-<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          {{ LDAPUser.uid_trim() }}
-        </a>
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {{ LDAPUser.uid_trim() }}
+                    </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="{{ url_for('changepasswd') }}">Change Password</a>
           <a class="dropdown-item" href="{{ url_for('wakeonlan') }}">Wake on LAN</a>

@@ -246,23 +246,6 @@ def changepasswd():
     if request.method=="POST":
         form = ChangePWForm(request.form)
         import auth.iaasldap as auth
-        # if current_user.uid_trim()=='soge':
-        #     success, msg = auth.change_password(user=request.form.get('username'),
-        #                            current_pass=request.form.get('current_pass'),
-        #                            new_pass=request.form.get('new_pass'),
-        #                            repeat_password=request.form.get('rep_pass'),
-        #                          full=True)
-        # else:
-        #     success, msg = auth.change_password(user=current_user.uid_trim(),
-        #                            current_pass=request.form.get('current_pass'),
-        #                            new_pass=request.form.get('new_pass'),
-        #                            repeat_password=request.form.get('rep_pass'),
-        #                          full=False)
-        #
-        # if success==1:
-        #     flash(msg,'message')
-        # else:
-        #     flash(msg,'error')
 
         if form.validate_on_submit():
             if current_user.uid_trim() == 'soge':
@@ -282,23 +265,7 @@ def changepasswd():
                 flash(msg, 'message')
             else:
                 flash(msg, 'error')
-    #         user = current_user
-    #         # user = User(username=form.username.data,
-    #         #             email=form.username.data,
-    #         #             password=form.password.data)
-    #         success, ret = current_user.change_password(form.oldpw, form.password, form.password2)
-    #         if success:
-    #             flash(ret, category='message')
-    #         else:
-    #             flash(ret, category="error")
-    #
-    #             # return redirect(url_for('index'))
-    #
-    #     try:
-    #         return render_template("account.html", groups=groups, instances=instances, form=form)
-    #     except TemplateNotFound:
-    #         abort(404)
-    #
+
         else:
             flash("Failed to Change Password", 'error')
         return render_template('changepasswd.html', form=form)
