@@ -243,6 +243,7 @@ def create_download_rdp_file(comp_address):
 def changepasswd():
     from auth.forms import ChangePWForm
     form = ChangePWForm()
+    return "hello"
     if request.method=="POST":
         form = ChangePWForm(request.form)
         import auth.iaasldap as auth
