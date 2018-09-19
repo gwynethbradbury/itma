@@ -77,9 +77,9 @@
         </style>
     </head>
     <body>
-
-{#        {% if not LDAPUser.uid_trim()=="soge" %}#}
-        {% if LDAPUser.uid_trim()=="soge" %}
+{{LDAPUser.uid_trim()}}
+        {% if not LDAPUser.uid_trim()=="soge" %}
+{#        {% if LDAPUser.uid_trim()=="soge" %}#}
 
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
           <a class="navbar-brand" href="{{ url_for('index') }}">IT Support</a>
