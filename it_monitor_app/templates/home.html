@@ -24,7 +24,7 @@
 
         <div class="row">
 
-            {% if  LDAPUser.uid_trim()=="soge" %}
+            {% if not LDAPUser.uid_trim()=="soge" %}
                 <div class="col col-sm-12 col-lg-12 col-md-12">
 {#                <div class="row">#}
                     <div class="card w-100">
@@ -91,7 +91,6 @@
                     <h2>SoGE IT Training Events and Seminars</h2>
                     <p>Upcoming training events and seminars from SoGE IT.</p>
                     {{ layout.whatson( nowevents, futureevents) }}
-                {{ layout.whatsonpast(pastevents) }}
                 </div>
             {% endif %}
         </div>

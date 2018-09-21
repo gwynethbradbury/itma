@@ -63,7 +63,7 @@ def inject_paths():
 @app.route('/')
 def index():
     services = Service.query.order_by(Service.id.asc()).all()
-    nowevents, futureevents, pastevents = getEvents(5)
+    nowevents, futureevents, pastevents = getEvents()
     news = getNews(5)
     return render_template('home.html', services=services, nowevents=nowevents, futureevents=futureevents,
                            news=news,
