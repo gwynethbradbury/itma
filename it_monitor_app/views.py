@@ -61,7 +61,7 @@ def inject_paths():
 
 
 @app.route('/')
-def index():
+def ipad():
     services = Service.query.order_by(Service.id.asc()).all()
     nowevents, futureevents, pastevents = getEvents()
     news = getNews(5)
