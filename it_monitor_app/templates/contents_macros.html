@@ -352,8 +352,9 @@
 {#    <div class="container" >#}
 {#        <div class="row">#}
 {#            <div class="col">#}
-
+{% if not LDAPUser.uid_trim()=="soge" %}
                 <h3>Today ({{ nowevents|length }})</h3>
+    {% endif %}
                 {% for event in nowevents %}
                     <div class="card" >
                         {#  <img class="card-img-top" src="..." alt="Card image cap">#}
@@ -381,7 +382,7 @@
 
 
     {#        <div class="row">#}
-                <h3>Upcoming Events ({{ futureevents|length }})</h3>
+                <h3>Future Events ({{ futureevents|length }})</h3>
                 {% for event in futureevents %}
                     <div class="card" >
                         {#  <img class="card-img-top" src="..." alt="Card image cap">#}
