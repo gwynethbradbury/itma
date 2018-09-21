@@ -477,22 +477,24 @@ def test_disconnect():
 
 
 def getEvents(lim=-1):
+    events=[]
     if lim<0:
         events = iaas.IaasEvent.query.order_by(iaas.IaasEvent.eventdate.asc()).all()
     else:
         events = iaas.IaasEvent.query.order_by(iaas.IaasEvent.eventdate.desc()).limit(lim).all()
-        events = events[::-1]
+        events = events.reverse()
 
     pastevents = []
     futureevents = []
     nowevents = []
-    for e in events:
-        if e.eventdate < datetime.now().date():
-            pastevents.append(e)
-        elif e.eventdate > datetime.now().date():
-            futureevents.append(e)
-        else:
-            nowevents.append(e)
+    if events:
+        for e in events:
+            if e.eventdate < datetime.now().date():
+                pastevents.append(e)
+            elif e.eventdate > datetime.now().date():
+                futureevents.append(e)
+            else:
+                nowevents.append(e)
 
     return [ nowevents, futureevents, pastevents]
 
