@@ -69,6 +69,15 @@ def index():
                            news=news,
                            async_mode=socketio.async_mode,
                            messages=None)
+@app.route('/ipad')
+def index():
+    services = Service.query.order_by(Service.id.asc()).all()
+    nowevents, futureevents, pastevents = getEvents()
+    news = getNews(5)
+    return render_template('ipad.html', services=services, nowevents=nowevents, futureevents=futureevents,
+                           news=news,
+                           async_mode=socketio.async_mode,
+                           messages=None)
 @app.route('/test')
 def index2():
     services = Service.query.order_by(Service.id.asc()).all()
