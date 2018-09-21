@@ -66,7 +66,7 @@ def index():
     nowevents, futureevents, pastevents = getEvents()
     news = getNews(5)
     if current_user.uid_trim()=='soge':
-        return render_template('ipad')
+        return render_template('ipad.html')
     else:
         return render_template('home.html', services=services, nowevents=nowevents, futureevents=futureevents,
                                news=news,
