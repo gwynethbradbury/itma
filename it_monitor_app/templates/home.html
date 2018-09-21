@@ -12,7 +12,7 @@
         <div class="container">
             <h1>Welcome to SoGE IT Support</h1>
             {% if LDAPUser.uid_trim()=="soge" %}
-            <p><a class="btn btn-primary btn-lg" href="{{ url_for('changepasswd') }}">Change Password</a></p>
+            <p><a class="btn btn-primary btn-lg" href="{{ url_for('changepasswd') }}" target="_self">Change Password</a></p>
             {% endif %}
         </div>
     </div>
