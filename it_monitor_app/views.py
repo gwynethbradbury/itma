@@ -61,7 +61,7 @@ def inject_paths():
 
 
 @app.route('/')
-def ipad():
+def index():
     services = Service.query.order_by(Service.id.asc()).all()
     nowevents, futureevents, pastevents = getEvents()
     news = getNews(5)
@@ -70,7 +70,7 @@ def ipad():
                            async_mode=socketio.async_mode,
                            messages=None)
 @app.route('/ipad')
-def index():
+def ipad():
     services = Service.query.order_by(Service.id.asc()).all()
     nowevents, futureevents, pastevents = getEvents()
     news = getNews(5)
