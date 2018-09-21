@@ -63,7 +63,7 @@ def inject_paths():
 @app.route('/')
 def index():
     services = Service.query.order_by(Service.id.asc()).all()
-    nowevents, futureevents, pastevents = getEvents(5)
+    nowevents, futureevents, pastevents = getEvents()
     news = getNews(5)
     return render_template('home.html', services=services, nowevents=nowevents, futureevents=futureevents,
                            news=news,
@@ -477,24 +477,21 @@ def test_disconnect():
 
 
 def getEvents(lim=-1):
-    events=[]
     if lim<0:
         events = iaas.IaasEvent.query.order_by(iaas.IaasEvent.eventdate.asc()).all()
     else:
-        events = iaas.IaasEvent.query.order_by(iaas.IaasEvent.eventdate.desc()).limit(lim).all()
-        events = events.reverse()
+        events = iaas.IaasEvent.query.order_by(iaas.IaasEvent.eventdate.asc()).limit(lim).all()
 
     pastevents = []
     futureevents = []
     nowevents = []
-    if events:
-        for e in events:
-            if e.eventdate < datetime.now().date():
-                pastevents.append(e)
-            elif e.eventdate > datetime.now().date():
-                futureevents.append(e)
-            else:
-                nowevents.append(e)
+    for e in events:
+        if e.eventdate < datetime.now().date():
+            pastevents.append(e)
+        elif e.eventdate > datetime.now().date():
+            futureevents.append(e)
+        else:
+            nowevents.append(e)
 
     return [ nowevents, futureevents, pastevents]
 
