@@ -480,7 +480,8 @@ def getEvents(lim=-1):
     if lim<0:
         events = iaas.IaasEvent.query.order_by(iaas.IaasEvent.eventdate.asc()).all()
     else:
-        events = iaas.IaasEvent.query.order_by(iaas.IaasEvent.eventdate.asc()).limit(lim).all()
+        events = iaas.IaasEvent.query.order_by(iaas.IaasEvent.eventdate.desc()).limit(lim).all()
+        events = events[::-1]
 
     pastevents = []
     futureevents = []
