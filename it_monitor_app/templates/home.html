@@ -25,7 +25,7 @@
         <div class="row">
 
             {% if not LDAPUser.uid_trim()=="soge" %}
-            <div class="col col-sm-12 col-lg-12 col-md-12">
+                <div class="col col-sm-12 col-lg-12 col-md-12">
 {#                <div class="row">#}
                     <div class="card w-100">
                         <div class="card-body">
@@ -79,6 +79,19 @@
 
                 </div>
 {#            </div>#}
+            {% else %}
+{#                <iframe src="HTTP://YOUR_PRTG_SERVER/link/to/sensor.htm" title="sensor"></iframe>#}
+{#                {% for m in messages %}#}
+{#                    {{ m.type }}#}
+{#                    {{ m.message }}#}
+{#                {% endfor %}#}
+
+
+                <div class="col">
+                    <h2>SoGE IT Training Events and Seminars</h2>
+                    <p>Upcoming training events and seminars from SoGE IT.</p>
+                    {{ layout.whatson( nowevents, futureevents) }}
+                </div>
             {% endif %}
         </div>
 

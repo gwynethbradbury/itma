@@ -18,7 +18,32 @@
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
+<script type="text/javascript">
 
+function idleLogout() {
+    var t;
+    window.onload = resetTimer;
+    window.onmousemove = resetTimer;
+    window.onmousedown = resetTimer;  // catches touchscreen presses as well
+    window.ontouchstart = resetTimer; // catches touchscreen swipes as well
+    window.onclick = resetTimer;      // catches touchpad clicks as well
+    window.onkeypress = resetTimer;
+    window.addEventListener('scroll', resetTimer, true); // improved; see comments
+
+    function yourFunction() {
+        // redirect the ipad to the home page if inactive for too long
+        {% if LDAPUser.uid_trim()=="soge" %}
+        window.location.href = 'it.ouce.ox.ac.uk';
+        {% endif %}
+    }
+
+    function resetTimer() {
+        clearTimeout(t);
+        t = setTimeout(yourFunction, 30000);  // time is in milliseconds
+    }
+}
+idleLogout();
+</script>
 
 
         {% block additionalscripts %}{% endblock %}

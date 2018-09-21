@@ -67,7 +67,8 @@ def index():
     news = getNews(5)
     return render_template('home.html', services=services, nowevents=nowevents, futureevents=futureevents,
                            news=news,
-                           async_mode=socketio.async_mode)
+                           async_mode=socketio.async_mode,
+                           messages=None)
 @app.route('/test')
 def index2():
     services = Service.query.order_by(Service.id.asc()).all()
@@ -268,6 +269,8 @@ def changepasswd():
 
         else:
             flash("Failed to Change Password", 'error')
+        if current_user.uid_trim() == 'soge':
+            return redirect('/')
         return render_template('changepasswd.html', form=form)
     return render_template('changepasswd.html', form=form)
 
