@@ -24,13 +24,36 @@
 
         <div class="row">
             <div class="col {% if not LDAPUser.uid_trim()=="soge" %}col-sm-12 col-lg-9 col-md-12{% endif %}">
-                <iframe width=3840 height=2160 frameborder="1"
-src="https://PRTG.ouce.ox.ac.uk/public/mapshow.htm?id=3140&mapid=79234DB2-AA07-465C-81DF-C0203D3F2DA1">
-</iframe>
+
+
 
                 <div id="carouselExampleControls" class="carousel slide w-100" data-ride="carousel">
                     <div class="carousel-inner" style="min-height: 1000px">
                         <div class="carousel-item active">
+
+
+                <iframe width=100% frameborder="1"
+src="https://PRTG.ouce.ox.ac.uk/public/mapshow.htm?id=3140&mapid=79234DB2-AA07-465C-81DF-C0203D3F2DA1">
+</iframe>
+                        </div>
+                        <div class="carousel-item">
+
+<iframe width=3840 height=2160 frameborder="1"
+src="https://PRTG.ouce.ox.ac.uk/public/mapshow.htm?id=2093&mapid=217B0F22-B9F1-4592-AF39-7B6CAF65E519">
+</iframe>
+                        </div>
+                        <div class="carousel-item">
+
+            <iframe width=3840 height=2160 frameborder="1"
+src="https://PRTG.ouce.ox.ac.uk/public/mapshow.htm?id=3138&mapid=3E609562-84DA-4D1A-BA2D-B00BD8211760">
+</iframe>
+</div>
+                        <div class="carousel-item">
+
+
+{#                <div id="carouselExampleControls" class="carousel slide w-100" data-ride="carousel">#}
+{#                    <div class="carousel-inner" style="min-height: 1000px">#}
+{#                        <div class="carousel-item active">#}
                             <a href="{{ url_for('usage') }}">more...</a>
                             {{ layout.usage() }}
                         </div>
