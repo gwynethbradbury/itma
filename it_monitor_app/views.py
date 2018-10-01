@@ -258,17 +258,26 @@ def changepasswd():
         import auth.iaasldap as auth
 
         if form.validate_on_submit():
+
+            suffix = current_user.uid_suffix()
+            isAD=False
+            if (suffix == "ox.ac.uk"):
+                isAD = True
+            print(isAD)
+
             if current_user.uid_trim() == 'soge':
                 success, msg = auth.change_password(user=request.form.get('user'),
                                                     current_pass=request.form.get('current_pass'),
                                                     new_pass=request.form.get('password'),
                                                     repeat_password=request.form.get('password2'),
+                                                    isAD=True,
                                                     full=True,current_user=current_user)
             else:
                 success, msg = auth.change_password(user=current_user.uid_trim(),
                                                     current_pass=request.form.get('current_pass'),
                                                     new_pass=request.form.get('password'),
                                                     repeat_password=request.form.get('password2'),
+                                                    isAD=isAD,
                                                     full=False,current_user=current_user)
 
             if success == 1:
