@@ -1,8 +1,4 @@
-
 `{% if LDAPUser.uid_trim()=="soge" %} ` determines which features are shown on the ipads (soge user)
-
-
-
 
 ## Running
 
