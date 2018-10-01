@@ -86,9 +86,20 @@
 {#                    {{ m.message }}#}
 {#                {% endfor %}#}
 
+                        <div class="col col-sm-12 col-lg-12 col-md-12">
 
-                <div class="col">
-                    {{ layout.whatson( nowevents, futureevents) }}
+
+                    {% if year ==2018 %}
+                        {{ layout.whatson( nowevents, futureevents) }}
+                    {% else %}
+                        <div class="card w-100">
+                            <div class="card-body">
+                                <h4 class="card-title">IT News</h4>
+                                <p class="card-text">{{ layout.newsbrief(news) }}</p>
+                                <a href="{{ url_for('news') }}" class="btn btn-primary">more..</a>
+                            </div>
+                        </div>
+                    {% endif %}
                 </div>
             {% endif %}
         </div>

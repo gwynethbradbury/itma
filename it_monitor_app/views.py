@@ -57,7 +57,7 @@ def inject_paths():
         olp = '/online_learning/'
     else:
         olp = 'http://0.0.0.0:5000/'
-    return dict(LDAPUser=LDAPUser(),debug=dbconfig.debug, online_learn_path=olp)
+    return dict(LDAPUser=LDAPUser(),debug=dbconfig.debug, online_learn_path=olp, year= datetime.utcnow().year)
 
 
 @app.route('/')
