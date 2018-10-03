@@ -83,7 +83,7 @@ class Service(db.Model):
         elif self.name=='SogE NextCloud':
             return 'nextcloud.ouce.ox.ac.uk'
         elif self.name=='DBAS':
-            return 'IAAS-gatewat.ouce.ox.ac.uk'
+            return 'IAAS-gateway.ouce.ox.ac.uk'
         elif self.name=='OUCE Network':
             return '8.8.8.8'
         return ''
