@@ -80,7 +80,7 @@ class Service(db.Model):
             return 'linux.ouce.ox.ac.uk'
         elif self.name=='Gitlab':
             return 'gitlab.ouce.ox.ac.uk'
-        elif self.name=='SogE NextCloud':
+        elif self.name=='SoGE NextCloud':
             return 'nextcloud.ouce.ox.ac.uk'
         elif self.name=='DBAS':
             return 'IAAS-gateway.ouce.ox.ac.uk'
