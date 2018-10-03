@@ -68,9 +68,9 @@ class Service(db.Model):
         self.status=status
 
     def status_style(self):
-        if self.get_status==3:
+        if self.get_status()==3:
             return 'btn-success'
-        if self.get_status==1:
+        if self.get_status()==1:
             return 'btn-danger'
         return 'btn-warning'
 
@@ -100,9 +100,9 @@ class Service(db.Model):
         return 2
 
     def status_content(self):
-        if self.get_status==3:
+        if self.get_status()==3:
             return 'OK'
-        if self.get_status==1:
+        if self.get_status()==1:
             return 'Not OK'
         return 'Status Unknown'
 
