@@ -14,12 +14,6 @@ import math
 from jinja2 import TemplateNotFound
 
 
-from markdown import markdown
-from markdown.extensions.codehilite import CodeHiliteExtension
-from markdown.extensions.extra import ExtraExtension
-
-
-
 current_user = LDAPUser()
 
 import imp
@@ -50,7 +44,6 @@ for  i in range(10):
       cluster_load[i][j] = 0
 
 
-# region 'my code'
 @app.context_processor
 def inject_paths():
     if dbconfig.is_server_version:
@@ -101,48 +94,10 @@ def events():
     nowevents, futureevents, pastevents = getEvents()
     return render_template('events.html', pastevents=pastevents, nowevents=nowevents, futureevents=futureevents)
 
-# @app.route('/events/<int:event_id>', methods=['POST', 'GET'])
-# def event(event_id):
+
 @app.route('/news/<int:news_id>', methods=['POST', 'GET'])
 def news_item(news_id):
     news_item = iaas.News.query.get_or_404(news_id)
-
-    if request.method == 'POST':
-        try:
-            pass
-            # event.description = request.form.get('description')
-            # event.venue_id = request.form.get('storyline_id')
-            # event.date = request.form.get('nextdate')
-            # event.startat = request.form.get('starttime')
-            # event.endat = request.form.get('endtime')
-            # if request.form.get('repeatsweekly') == "Yes":
-            #     event.status = 2
-            #     event.day = Day[request.form.get('day_id')].value
-            # elif request.form.get('repeatreminder'):
-            #     event.status = 3
-            # else:
-            #     event.status = 1
-            #
-            # for d in dances:
-            #     if d.possibletags.count():
-            #         for t in d.possibletags:
-            #             x = (request.form.get(str(d.id) + '_' + str(t.id)) == str(t.id))
-            #             y = (t in event.tags)
-            #             if not x == y:
-            #                 set_tag(event_id, t.id)
-            #                 set_genre(event_id, t.dance.id)
-            #     else:
-            #         x = (request.form.get(str(d.id) + '_') == 'genre')
-            #         y = (d in event.dances)
-            #         if not x == y:
-            #             set_genre(event_id, d.id)
-            #
-            # db.session.add(event)
-            # db.session.commit()
-        except KeyError:
-            abort(400)
-
-        flash("Saved", category='message')
 
     return render_template('news_item.html', news=news_item)
 
@@ -187,8 +142,8 @@ def wakeonlan():
 
         elif request.form.get('wake') == "Remote Desktop (RDP app)":
             return create_download_rdp_file(w.computer)
-        # else:
-        #     flash("something went wrong",category="error")
+        else:
+            flash("something went wrong",category="error")
 
 
 
@@ -397,9 +352,6 @@ def background_thread():
                       namespace='/systemusage')
 
 
-# @app.route('/')
-# def index():
-#     return render_template('index.html', async_mode=socketio.async_mode)
 
 @socketio.on('message')
 def handle_message(host,msg):
