@@ -55,6 +55,9 @@ def inject_paths():
 
 @app.route('/')
 def index():
+    # Home page at www.it.ouce.ox.ac.uk
+    # Shows news and events if in browser, shows change password button and events if on ipad before 2019
+    # otherwise, shows news
     services = Service.query.order_by(Service.id.asc()).all()
     nowevents, futureevents, pastevents = getEvents()
     news = getNews(5)
@@ -62,17 +65,10 @@ def index():
                            news=news,
                            async_mode=socketio.async_mode,
                            messages=None)
-@app.route('/ipad')
-def ipad():
-    services = Service.query.order_by(Service.id.asc()).all()
-    nowevents, futureevents, pastevents = getEvents()
-    news = getNews(5)
-    return render_template('ipad.html', services=services, nowevents=nowevents, futureevents=futureevents,
-                           news=news,
-                           async_mode=socketio.async_mode,
-                           messages=None)
+
 @app.route('/test')
 def index2():
+    # playground page, displays home_test.html
     services = Service.query.order_by(Service.id.asc()).all()
     nowevents, futureevents, pastevents = getEvents(5)
     news = getNews(5)
@@ -83,6 +79,7 @@ def index2():
 
 @app.route('/<page>')
 def show(page):
+    # shows any unregistered paged
     try:
         return render_template("%s.html" % page)
     except TemplateNotFound:
@@ -91,18 +88,23 @@ def show(page):
 
 @app.route('/events')
 def events():
+    # lists the events as entered on the db.ouce.ox.ac.uk database, edited at:
+    # https://db.ouce.ox.ac.uk/admin/iaas_IAAS%20Events/
     nowevents, futureevents, pastevents = getEvents()
     return render_template('events.html', pastevents=pastevents, nowevents=nowevents, futureevents=futureevents)
 
 
 @app.route('/news/<int:news_id>', methods=['POST', 'GET'])
 def news_item(news_id):
+    # displays a specific news article
     news_item = iaas.News.query.get_or_404(news_id)
 
     return render_template('news_item.html', news=news_item)
 
 @app.route('/news')
 def news():
+    # lists the news articles as entered on the db.ouce.ox.ac.uk database, edited at:
+    # https://db.ouce.ox.ac.uk/admin/iaas_News/
     news = getNews()
     return render_template('news.html', news=news)
 
@@ -110,6 +112,9 @@ def news():
 @app.route('/service_status')
 def service_status():
     services = Service.query.order_by(Service.id.asc()).all()
+
+
+
     return render_template('service_status.html', services=services)
 
 

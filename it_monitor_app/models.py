@@ -74,11 +74,36 @@ class Service(db.Model):
             return 'btn-danger'
         return 'btn-warning'
 
+
+    def hostname(self):
+        if self.name=='Linux':
+            return 'linux.ouce.ox.ac.uk'
+        elif self.name=='Gitlab':
+            return 'gitlab.ouce.ox.ac.uk'
+        elif self.name=='SogE NextCloud':
+            return 'nextcloud.ouce.ox.ac.uk'
+        elif self.name=='DBAS':
+            return 'IAAS-gatewat.ouce.ox.ac.uk'
+        elif self.name=='OUCE Network':
+            return '8.8.8.8'
+        return ''
+
     def status_content(self):
-        if self.status==3:
+        import os
+        response = os.system("ping -c 1 " + self.hostname())
+
+        # and then check the response...
+        if response == 0:
+            print self.hostname(), 'is up!'
             return 'OK'
-        if self.status==1:
+        else:
+            print self.hostname(), 'is down!'
             return 'Not OK'
+
+        # if self.status==3:
+        #     return 'OK'
+        # if self.status==1:
+        #     return 'Not OK'
         return 'Status Unknown'
 
 class wol_computer(db.Model):
