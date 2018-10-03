@@ -59,6 +59,9 @@ def index():
     # Shows news and events if in browser, shows change password button and events if on ipad before 2019
     # otherwise, shows news
     services = Service.query.order_by(Service.id.asc()).all()
+    msg, all_up = Service.get_messages()
+    if not all_up:
+        flash(msg,"error")
     nowevents, futureevents, pastevents = getEvents()
     news = getNews(5)
     return render_template('home.html', services=services, nowevents=nowevents, futureevents=futureevents,
@@ -111,9 +114,8 @@ def news():
 
 @app.route('/service_status')
 def service_status():
+    # Shows result when the servers are pinged
     services = Service.query.order_by(Service.id.asc()).all()
-
-
 
     return render_template('service_status.html', services=services)
 

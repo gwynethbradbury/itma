@@ -119,9 +119,9 @@ idleLogout();
 {#                <ul class="nav navbar-nav">#}
 {#                    <a class="navbar-brand" href="{{ url_for('index') }}">IT Support</a>#}
 
-{#                    <li class="nav-item {{ url_for('service_status') | is_current_page }}">#}
-{#                        <a class="nav-link" href="{{ url_for('service_status') }}">Service Status</a>#}
-{#                    </li>#}
+                    <li class="nav-item {{ url_for('service_status') | is_current_page }}">
+                        <a class="nav-link" href="{{ url_for('service_status') }}">Service Status</a>
+                    </li>
 {##}
 {#                    <li class="nav-item {{ url_for('usage') | is_current_page }}">#}
 {#                        <a class="nav-link" href="{{ url_for('usage') }}">Usage</a>#}

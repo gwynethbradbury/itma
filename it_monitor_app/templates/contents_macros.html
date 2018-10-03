@@ -280,7 +280,7 @@
             {% for s in services %}
                 <div>
                     <button style="width:150px; margin-right: 15px" class="btn {{ s.status_style() }}">{{ s.status_content() }}</button>
-                    {{ s.name }}
+                    {{ s.name }} <br/>
                 </div>
             {% endfor %}
         </div>

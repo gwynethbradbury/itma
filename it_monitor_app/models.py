@@ -106,6 +106,17 @@ class Service(db.Model):
             return 'Not OK'
         return 'Status Unknown'
 
+    @staticmethod
+    def get_messages():
+        services = Service.query.order_by(Service.id.asc()).all()
+        msg=""
+        all_up=True
+        for s in services:
+            if not s.get_status()==3:
+                msg=msg+ "There is a problem with "+s.name+"\n"
+                all_up=False
+        return msg,all_up
+
 class wol_computer(db.Model):
     __bind_key__ = 'it_monitor_app'
     __tablename__ = 'wol_computer'
