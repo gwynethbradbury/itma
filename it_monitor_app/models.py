@@ -68,9 +68,9 @@ class Service(db.Model):
         self.status=status
 
     def status_style(self):
-        if self.status==3:
+        if self.get_status==3:
             return 'btn-success'
-        if self.status==1:
+        if self.get_status==1:
             return 'btn-danger'
         return 'btn-warning'
 
@@ -88,22 +88,22 @@ class Service(db.Model):
             return '8.8.8.8'
         return ''
 
-    def status_content(self):
+    def get_status(self):
         import os
         response = os.system("ping -c 1 " + self.hostname())
 
         # and then check the response...
         if response == 0:
-            print self.hostname(), 'is up!'
-            return 'OK'
+            return 3
         else:
-            print self.hostname(), 'is down!'
-            return 'Not OK'
+            return 1
+        return 2
 
-        # if self.status==3:
-        #     return 'OK'
-        # if self.status==1:
-        #     return 'Not OK'
+    def status_content(self):
+        if self.get_status==3:
+            return 'OK'
+        if self.get_status==1:
+            return 'Not OK'
         return 'Status Unknown'
 
 class wol_computer(db.Model):
