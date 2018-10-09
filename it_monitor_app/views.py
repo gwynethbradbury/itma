@@ -58,10 +58,15 @@ def index():
     # Home page at www.it.ouce.ox.ac.uk
     # Shows news and events if in browser, shows change password button and events if on ipad before 2019
     # otherwise, shows news
+
+    # FLASHES A MESSAGE IF ANY OF THE DATABASE ENTRIES FOR SERVICE ARE DOWN.
+    # see the models.py file for how this is checked, any additional services need to have their hostname added to Service.hostmane() (bit hacky)
+    # and to the database at: https://db.ouce.ox.ac.uk/projects/it_apps/databases/it_monitor_app/it_monitor_app_Service/
     services = Service.query.order_by(Service.id.asc()).all()
     msg, all_up = Service.get_messages()
     if not all_up:
         flash(msg,"error")
+
     nowevents, futureevents, pastevents = getEvents()
     news = getNews(5)
     return render_template('home.html', services=services, nowevents=nowevents, futureevents=futureevents,

@@ -26,7 +26,6 @@
 
             {% if not LDAPUser.uid_trim()=="soge" %}
                 <div class="col col-sm-12 col-lg-12 col-md-12">
-{#                <div class="row">#}
                     <div class="card w-100">
                         <div class="card-body">
                             <h4 class="card-title">IT News</h4>
@@ -34,8 +33,6 @@
                             <a href="{{ url_for('news') }}" class="btn btn-primary">more..</a>
                         </div>
                     </div>
-{#                </div>#}
-{#                <div class="row">#}
 
                     <div class="card w-100" >
                         <a  href="https://db.ouce.ox.ac.uk">
@@ -47,9 +44,6 @@
                             <a href="{{ url_for('events') }}" class="btn btn-primary">more..</a>
                         </div>
                     </div>
-{#                </div>#}
-{##}
-{#                <div class="row">#}
 
                     <div class="card w-100" >
                         <a  href="https://gitlab.ouce.ox.ac.uk">
@@ -62,9 +56,6 @@
                         </div>
                     </div>
 
-{#                </div>#}
-{##}
-{#                <div class="row">#}
 
                     <div class="card w-100" >
                         <a  href="https://db.ouce.ox.ac.uk">
@@ -78,13 +69,7 @@
                     </div>
 
                 </div>
-{#            </div>#}
             {% else %}
-{#                <iframe src="HTTP://YOUR_PRTG_SERVER/link/to/sensor.htm" title="sensor"></iframe>#}
-{#                {% for m in messages %}#}
-{#                    {{ m.type }}#}
-{#                    {{ m.message }}#}
-{#                {% endfor %}#}
 
                         <div class="col col-sm-12 col-lg-12 col-md-12">
 
@@ -120,30 +105,7 @@
         <input type="submit" value="Echo">
     <p>Async mode is: <b>{{ async_mode }}, Average latency: <b><span id="ping-pong"></span>ms</b></p>
     </form>
-{#    <form id="broadcast" method="POST" action='#'>#}
-{#        <input type="text" name="broadcast_data" id="broadcast_data" placeholder="Message">#}
-{#        <input type="submit" value="Broadcast">#}
-{#    </form>#}
-{#    <form id="join" method="POST" action='#'>#}
-{#        <input type="text" name="join_room" id="join_room" placeholder="Room Name">#}
-{#        <input type="submit" value="Join Room">#}
-{#    </form>#}
-{#    <form id="leave" method="POST" action='#'>#}
-{#        <input type="text" name="leave_room" id="leave_room" placeholder="Room Name">#}
-{#        <input type="submit" value="Leave Room">#}
-{#    </form>#}
-{#    <form id="send_room" method="POST" action='#'>#}
-{#        <input type="text" name="room_name" id="room_name" placeholder="Room Name">#}
-{#        <input type="text" name="room_data" id="room_data" placeholder="Message">#}
-{#        <input type="submit" value="Send to Room">#}
-{#    </form>#}
-{#    <form id="close" method="POST" action="#">#}
-{#        <input type="text" name="close_room" id="close_room" placeholder="Room Name">#}
-{#        <input type="submit" value="Close Room">#}
-{#    </form>#}
-{#    <form id="disconnect" method="POST" action="#">#}
-{#        <input type="submit" value="Disconnect">#}
-{#    </form>#}
+
     <div id="log"></div>
 
 {% endif %}

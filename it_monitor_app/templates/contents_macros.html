@@ -349,77 +349,63 @@
     </ul>
 {% endmacro %}
 {% macro whatson( nowevents=[], futureevents=[]) %}
-{#    <div class="container" >#}
-{#        <div class="row">#}
-{#            <div class="col">#}
-{% if not LDAPUser.uid_trim()=="soge" and nowevents|length >0 %}
+
+    {% if not LDAPUser.uid_trim()=="soge" and nowevents|length >0 %}
                 <h3>Today ({{ nowevents|length }})</h3>
     {% endif %}
 
-                {% for event in nowevents %}
-                    <div class="card" >
-                        {#  <img class="card-img-top" src="..." alt="Card image cap">#}
-                        <div class="card-body">
-                            <article class="event">
+    {% for event in nowevents %}
+        <div class="card" >
+            {#  <img class="card-img-top" src="..." alt="Card image cap">#}
+            <div class="card-body">
+                <article class="event">
 
-                                    <div class="event-date">
-                                        <p class="event-monthnow">{{ event.eventdate_str() }}</p>
-                                        <p class="event-day">{{ event.eventday_str() }}</p>
-                                    </div>
-
-                                    <div class="event-desc">
-                                        <h4 class="event-desc-header">{{ event.title }}</h4>
-                                        <p class="event-desc-detail"><span class="event-desc-time">{{ event.subtitle }}</span></p>
-                                        <p>{{ eventdescription }}<br/>{{ event.room }}, {{ event.starttime }}-{{ event.endtime }}</p>
-                                        <!--<a href="#" class="rsvp button">RSVP &amp; Details</a>-->
-                                    </div>
-                            </article>
+                        <div class="event-date">
+                            <p class="event-monthnow">{{ event.eventdate_str() }}</p>
+                            <p class="event-day">{{ event.eventday_str() }}</p>
                         </div>
-                    </div>
-                    <br/>
 
-                {% endfor %}
-    {#        </div>#}
-
-
-    {#        <div class="row">#}
-                <h3>Future Events ({{ futureevents|length }})</h3>
-                {% for event in futureevents %}
-                    <div class="card" >
-                        {#  <img class="card-img-top" src="..." alt="Card image cap">#}
-                        <div class="card-body">
-                            <article class="event">
-
-                                <div class="event-date">
-                                    <p class="event-monthfuture">{{ event.eventdate_str() }}</p>
-                                    <p class="event-day">{{ event.eventday_str() }}</p>
-                                </div>
-
-                                <div class="event-desc">
-                                    <h4 class="event-desc-header">{{ event.title }}</h4>
-                                    <p class="event-desc-detail"><span class="event-desc-time">{{ event.subtitle }}</span></p>
-                                    <p>{{ eventdescription }}<br/>{{ event.room }}, {{ event.starttime }}-{{ event.endtime }}</p>
-                                    <!--<a href="#" class="rsvp button">RSVP &amp; Details</a>-->
-                                </div>
-                            </article>
+                        <div class="event-desc">
+                            <h4 class="event-desc-header">{{ event.title }}</h4>
+                            <p class="event-desc-detail"><span class="event-desc-time">{{ event.subtitle }}</span></p>
+                            <p>{{ eventdescription }}<br/>{{ event.room }}, {{ event.starttime }}-{{ event.endtime }}</p>
+                            <!--<a href="#" class="rsvp button">RSVP &amp; Details</a>-->
                         </div>
+                </article>
+            </div>
+        </div>
+        <br/>
+
+    {% endfor %}
+
+
+    <h3>Future Events ({{ futureevents|length }})</h3>
+    {% for event in futureevents %}
+        <div class="card" >
+            <div class="card-body">
+                <article class="event">
+
+                    <div class="event-date">
+                        <p class="event-monthfuture">{{ event.eventdate_str() }}</p>
+                        <p class="event-day">{{ event.eventday_str() }}</p>
                     </div>
 
-                    <br/>
+                    <div class="event-desc">
+                        <h4 class="event-desc-header">{{ event.title }}</h4>
+                        <p class="event-desc-detail"><span class="event-desc-time">{{ event.subtitle }}</span></p>
+                        <p>{{ eventdescription }}<br/>{{ event.room }}, {{ event.starttime }}-{{ event.endtime }}</p>
+                    </div>
+                </article>
+            </div>
+        </div>
 
-                {% endfor %}
+        <br/>
 
+    {% endfor %}
 
-{#            </div>#}
-{#        </div>#}
-{#    </div>#}
 {% endmacro %}
 
 {% macro whatsonpast( pastevents=[]) %}
-{#    <div class="container" style="background-color: #ffffff" >#}
-
-{#        <div class="row">#}
-{#            <div class="col">#}
 
                 <h3>Past Events ({{ pastevents|length }})</h3>
                 <br/>

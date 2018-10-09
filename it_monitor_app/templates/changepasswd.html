@@ -13,37 +13,28 @@
 
         <form method="POST">
 
-                    {{ form.csrf_token }}
+            {{ form.csrf_token }}
 
 
-{#                        {{ render_field(groupfield) }}#}
             {% if LDAPUser.uid_trim()=='soge' %}
 
-                        {{ render_field(form.user) }}
-                        {{ render_field(form.oldpw) }}
+                {{ render_field(form.user) }}
+                {{ render_field(form.oldpw) }}
             {% endif %}
 
-                        {{ render_field(form.password) }}
-                        {{ render_field(form.password2) }}
+                {{ render_field(form.password) }}
+                {{ render_field(form.password2) }}
 
-                    <div class="control-group">
-                      <label class="control-label"></label>
-                      <div class="controls">
-                        <button type="submit" id="submit" class="btn btn-primary" value="Update">Submit</button>
-                      </div>
-                    </div>
-
-
+            <div class="control-group">
+              <label class="control-label"></label>
+              <div class="controls">
+                <button type="submit" id="submit" class="btn btn-primary" value="Update">Submit</button>
+              </div>
+            </div>
 
 
 
-{#            {% if LDAPUser.uid_trim()=='soge' %}#}
-{#            <div class="form-group"><input type="text" name="username" placeholder="Username"/></div>#}
-{#            <div class="form-group"><input type="password" name="current_pass" placeholder="Current password"/></div>#}
-{#            {% endif %}#}
-{#            <div class="form-group"><input type="password" name="new_pass" placeholder="New password"/></div>#}
-{#            <div class="form-group"><input type="password" name="rep_pass" placeholder="Repeat password"/></div>#}
-{#            <input type="submit" class="btn btn-info" value="Update"/>#}
+
         </form>
     </div>
 
