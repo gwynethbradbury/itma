@@ -44,3 +44,8 @@ Works without difficulty for external and internal users
 Does not seem to work although there is no notable change to the code. It is important to note that the database should be kept up to date on db.ouce.ox.ac.uk:
 
 https://db.ouce.ox.ac.uk/projects/it_apps/databases/it_monitor_app/it_monitor_app_Wol%20Computer/
+
+
+Fault is in the shell scripts at /usr/local/bin/wol_by_name and  /usr/local/bin/is_up
+
+is_up now works but see inside for the changes made to the permissions/access used to run it. wol script does not work.
